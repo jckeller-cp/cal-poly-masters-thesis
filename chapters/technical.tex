@@ -1,1 +1,161 @@
 \chapter{Technical Implementation} \label{sec:TechnicalImplementation}
+
+\section{Engine And Frontend} \label{sec:EngineAndFrontend}
+
+The Praxsmith project consists of an engine written in Rust and a frontend written
+using the Svelte JavaScript framework that allows for developers and players to
+experience the projects they write. The engine is compiled to WASM to allow it to
+run directly on the browser, and TypeScript bindings were also generated to allow
+for more confident frontend development.
+
+There were a few motivating factors behind this split-architecture design:
+
+\begin{itemize}
+    \item Rust has many features that help greatly with the development of a programming
+    language, including rigid type checking rules, pattern matching, and errors as values.
+    This allowed for cleaner logic and fewer issues while developing, which greatly
+    decreased production time.
+    \item Centralizing in Rust provides the opportunity for integration with other tools,
+    like the Unity game engine. (TODO: cite?) Bindings from Rust to other languages are
+    widely available, such as the ``wasm-bindgen'' crate used for the web interface. As of
+    now, there are only core and WASM crates, but it is trivial to add new ones that
+    act as a thin wrapper around the core API.
+    \item Rust's ecosystem is fairly developed, including the ``pest'' parsing library,
+    which has strong integrations with Rust's compile-time type system.
+    \item Rust is fast, which isn't crucial for a dialog system but helps in some scenarios,
+    such as when using higher recursive depths for the planning system described below.
+    \item The prevalence of WASM means that JavaScript bindings in particular are a
+    well-documented technical challenge.
+    \item Making the project accessible directly from the web allows for high ease of use,
+    as research participants, developers, and players do not need to install anything to
+    use Praxsmith. It also means that updates are immediately available on the user's
+    end upon reloading the page.
+    \item The developer was familiar both Rust and Svelte.
+\end{itemize}
+
+\section{Parsing} \label{sec:Parsing}
+
+To define the rules of the language, the ``pest'' library was used. The ``pest''
+language used to define the syntax is also directly used by the parsing system.
+Upon parsing, ``pest'' returns detailed errors if something goes wrong, which
+turned out to be crucial when developing scenarios, especially for those in the
+process of learning the language.
+
+The language is parsed from two files: a type script and a world script. The type
+script is parsed into a series of relation types that are added to a type registry
+upon world creation. The world script is parsed into a series of agent initializations
+and relation declarations which are added to the world's internal representation
+one by one.
+
+This split script design allows for separation of the rules that guide characters
+and those characters themselves. The rules can be referred to when writing the
+characters, and concerns are naturally separated across this boundary. It also
+allows for the reuse of rules within different stories. With more usage, a common
+types file could be developed, including all that is needed to set up a basic
+story with all manners of interaction.
+
+\section{Internal Graph Representation} \label{sec:InternalGraphRepresentation}
+
+Internally, the world is represented as a graph with agents and relations as nodes
+and edges existing between these two types that connect agents to the relations they
+are involved in and vice versa.
+
+Agents are maintained as a simple hashmap with their ID as the key, which works
+well because agents are initialized once upon world load and never added or removed
+during runtime.
+
+Relations need a slightly different solution, as they can be dynamically added and
+removed. For this, generational indices were used, which allow for relations to be
+pointed to while also automatically invalidating pointers to removed relations. (TODO: cite)
+
+Each edge between agents and relations and vice versa also contains a small amount of
+utility information that helps different world operations complete their tasks
+efficiently, such as storing the index an agent occupies within a relation to identify
+which edge of a directional it is on.
+
+(TODO: visual)
+
+\section{Type Checking} \label{sec:TypeChecking}
+
+After the world is built, a scan is passed over it to ensure that expressions resolve
+correctly to the type that is expected of them. For example, a predicate goal must
+evaluate to a boolean value, and a delta goal must evaluate to a number.
+
+The type checker also keeps track of guarantees, which are stored within any boolean
+type that a function is determined to evaluate to. For example, the expression
+$alice.feels.happy$ evaluates to a boolean type, but it also carries the guarantee that
+if it is true, the $alice.feels.happy$ will exist. Then, since the right hand of an
+$and$ expression is only evaluated if the left hand side is $true$, we can guarantee
+in the right hand branch that $alice.feels.happy$ will exist and can have its fields
+accessed.
+
+(TODO: visual)
+
+Type checking ended up being a very necessary part of the system. Every major change
+or addition would typically result in a few type checker errors that had to be resolved.
+By nature, these simulations are highly branching which makes them hard to thoroughly
+test. Catching these errors during world build time reduces latent logic errors
+significantly and offers useful feedback on how to achieve certain outcomes.
+
+\section{The Simulation Layer} \label{sec:Transactions}
+
+The world only stores data and simple utility functions for adding and modifying
+relations, which allows for a simulation layer to be built on top of it that handles
+common operations that are performed in more practical scenarios. For example,
+the simulation function for getting the value of a relation's field constructs a
+query from the sentence, ensures it is well-formed and refers to a relation type
+and actors that exist, and then forwards that request to the world, propagating
+and adding context to any errors it encounters along the way.
+
+Simulation functions that modify the world, such as most of the practice outcomes\/effects,
+require an additional transaction layer to be added to the pipeline. This layer records
+all low-level mutations made to the world, and allows for snapshotting and rollbacks of
+the world state to a specific point in time. By storing changes to the world state instead
+of distinct copies of the world state, the world can be very quickly iterated over
+to evaluate the scores of future states for the planning system. This is one large
+performance enhancement over the original Praxis, which used copies for evaluating actions (TODO: cite),
+and opens the door for planning further into the future.
+
+(TODO: visual)
+
+\section{Planning System} \label{sec:PlanningSystem}
+
+The Praxsmith engine includes a built-in planner that uses the goals defined for each
+actor to score their potential actions by desirability. For example, if an actor has a
+goal with a weight of $5$ that counts all of the happy people in the world, actions that
+make people happy will be scored with $5$ per person, including anyone who becomes unhappy
+counting as negative score.
+
+As stated previously, the original Praxis created a new world state evaluated for each
+action and ran goal evaluations on each of those states to determine the score for
+each action. This is an elegant solution from a functional standpoint, but it does
+introduce the inefficiency of cloning the world every time an action is evaluated.
+
+Praxsmith, on the other hand, keeps track of every change in the world state and
+provides the ability to roll world state back through a transactional interface. For
+every action, the current point in the change log is recorded, the action is evaluated
+and scored, and then the world is rolled back to its initial state.
+
+This efficiency allows for higher depths of evaluations to be calculated, which is
+provided by a variable on the frontend when querying for agent actions. A depth of $1$
+will not catch a string of actions making someone happy 5 moves out, but a depth of
+$5$ will be able to think that far ahead. This allows agents to take more complex lines
+of thought and practically limits them only by what goals they have set.
+
+Introducing a ``Do Nothing'' no-op action exposes an issue with depth scoring, which is
+that the chain of $Do Nothing \rightarrow Do Nothing \rightarrow Positive Action$
+will score the same as just $Positive Action$ because they both end up in the same state,
+even though one has multiple unnecessary steps. To avoid this problem, each change in score
+decays when it is passed down the recursion change. In this case, the score delta from
+the initial world state to the state after $Positive Action$ is processed might be $5$,
+but after the two $Do Nothing$ actions, that score decays down to $3.2$, assuming a
+decay rate of $0.8$. This allows the planner to prioritize quick positive results over ones
+that may take several turns.
+
+(TODO: figure)
+
+One limitation of this system is that it only accounts for the actions your character
+could take. This is primarily because the core Praxsmith engine has no notion of
+actor turn order, so it wouldn't know whose actions to evaluate next. This is explained
+more in the Limitations section (TODO: ref), but centralizing action order would allow
+for characters to take the potential actions of others into account.

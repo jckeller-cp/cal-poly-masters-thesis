@@ -4,7 +4,7 @@
 
 The world refers to the collection of data that defines the state of the characters and
 their relations. It is split into Actors, which are either active contributors to your
-story or passive props/rooms, and Relations, which include any sort of data attached
+story or passive props\/rooms, and Relations, which include any sort of data attached
 to or between these actors. One unique type of relation, which is explored more later,
 is Social Practices, which provide the interface through which actors are able to interact
 with each other.
@@ -63,9 +63,9 @@ value. The goals themselves are written as expressions, which are explored later
 this paper. The weight appears within parenthesis, so the first goal can be read as
 ``Michelle wants any person to be excited with a weight of 3''. It only cares if there
 is any person that satisfies that condition, and if there is, the score for the
-resulting state will be increased by 3. The second goal can be read as ``score any
+resulting state will be increased by $3$. The second goal can be read as ``score any
 changes to the number of happy people with a weight of 1''. If an action reduces the
-number of happy people by 2, the resulting score will also be two lower than it
+number of happy people by $2$, the resulting score will also be two lower than it
 would be otherwise.
 
 \subsection{Relations}
@@ -123,42 +123,42 @@ and predicate logic.
 (count Person where (Person.feels.happy or Person.feels.excited)) > 3
 \end{lstlisting}
 
-In \Cref{lst:Expression}, the ``count'' operator is used to introduce a new binding, ``Person'',
+In \Cref{lst:Expression}, the ``count'' operator is used to introduce a new binding, $Person$,
 and the number of actors that match the following condition is compared in an inequality
-with 3. The introduction of free bindings like this makes expressions quite powerful,
+with $3$. The introduction of free bindings like this makes expressions quite powerful,
 although they do still come with limitations.
 
 Numerous operators of different types are available to manipulate sentences and values
 within expressions.
 
 \begin{itemize}
-    \item The ``and'', ``or'', and ``not'' operators all behave according to traditional boolean
+    \item The $and$, $or$, and $not$ operators all behave according to traditional boolean
     logic. Praxsmith does not have any concept of ``truthy'' or ``falsy'' values; if the inputs
     are not booleans, the type checker will not allow the world to build. Importantly, both
     binary boolean operators short-circuit, which allows them to act as gates that guarantee
     the existence of certain relations before their fields are queried.
-    \item The ``is'' operator allows for two values to be compared for equality. Both sides
+    \item The $is$ operator allows for two values to be compared for equality. Both sides
     must be the same type, or the type checker will fail.
-    \item The ``+'', ``-'', ``*'', and ``/'' operators act primarily as numerical addition,
+    \item The $+$, $-$, $*$, and $/$ operators act primarily as numerical addition,
     subtraction, multiplication, and division, although inspiration was taken from
     modern scripting languages to allow for addition to also describe string conversion
     and appending. The multiplication also allows for more flexible operations, like
     string repetition and treating booleans as 1-or-0 values for a makeshift if-statement
     that returns a number.
-    \item The ``for all \_'' operator evaluates to true if and only if every actor, bound
+    \item The $for all\ \_$ operator evaluates to true if and only if every actor, bound
     to the free variable, passes the condition. Care must be taken with this operator, as
     every actor also means the actor performing the action as well as static actors that
     would not count as characters, which must be filtered out if necessary.
-    \item The ``any \_ where'' operator evaluates to true if any actor, bound to the free
+    \item The $any\ \_\ where$ operator evaluates to true if any actor, bound to the free
     variable, passes the condition.
-    \item The ``count \_ where'' evaluates to a number representing the number of actors,
+    \item The $count\ \_\ where$ evaluates to a number representing the number of actors,
     bound to the free variable, that pass the condition. This is one of the primary
     methods of moving from the boolean space to the number space, and allows for
     goals to more accurately track large numbers of actors.
-    \item The ``sum'', ``average'', ``min'', and ``max'' operators represent aggregators that
+    \item The $sum$, $average$, $min$, and $max$ operators represent aggregators that
     work similarly to the ``count'' operator, except instead of simply counting the number
     of actors that pass a condition, a certain value from those actors is accumulated
-    according to the specified method. Degenerate cases default to 0.
+    according to the specified method. Degenerate cases default to $0$.
 \end{itemize}
 
 \subsection{Type Checking Guarantees}
@@ -177,21 +177,21 @@ not Other.trusts.Person or Other.trusts.Person.level < 5
 \end{lstlisting}
 
 \Cref{lst:TypeChecking} shows a couple of examples of expressions that either pass
-or fail the type checking pass. Assuming that the ``level'' field is in fact a number,
+or fail the type checking pass. Assuming that the $level$ field is in fact a number,
 it may seem counterintuitive that the first expression fails. This is because it may
 an error if the relation does not exist, which is a potential major pitfall,
 especially when using the operators that iterate over large numbers of actors.
 
-The other compiling examples both make use of the short-circuit guarantees of the ``and''
-and ``or'' operators, in that the right-hand expression will only need to be evaluated
-if the left-hand is ``true'' or ``false'', respectively. The type checker tracks these
+The other compiling examples both make use of the short-circuit guarantees of the $and$
+and $or$ operators, in that the right-hand expression will only need to be evaluated
+if the left-hand is $true$ or $false$, respectively. The type checker tracks these
 guarantees along its iteration of the expression, thus ensuring that runtime errors are
 never thrown due to invalid field accesses.
 
 This also allows for custom default/fallback behavior. The first compiling example in
-\Cref{lst:TypeChecking} requires that Other trusts Person with a level of greater than
-5, while the second compiling example requires that Other trusts person with a level
-of less than 5 or, importantly, not at all. This behavior is important to keep in mind
+\Cref{lst:TypeChecking} requires that $Other$ trusts $Person$ with a $level$ of greater than
+$5$, while the second compiling example requires that $Other$ trusts $Person$ with a $level$
+of less than $5$ or, importantly, not at all. This behavior is important to keep in mind
 when writing expressions, and the condensed nature of this predicate-style logic can be hard
 to keep track of when first using the language.
 
@@ -228,7 +228,7 @@ bob.is_married_to.alice
 \textbf{Traits} define a property that an actor can have. They only ever have one connected
 actor, which is the actor expressing that trait. An actor can have many traits,
 and they can be added or removed at any time. As seen in \Cref{lst:RelationTypeExamples},
-they can be accessed using the ``is'' keyword.
+they can be accessed using the $is$ keyword.
 
 \textbf{Emotions} define a short-lived feeling an actor can have. Similarly to traits, they
 only ever have one connected actor, which is the actor expressing that emotion.
@@ -236,7 +236,7 @@ Unlike traits, an actor can only ever have one emotion at a time. If long-term e
 are desired, this is not the relation type to use. Emotions are intended as a quick
 way to represent how a character is feeling in the moment, and can be easily queried
 and displayed by the frontend for the player to see. As seen in \Cref{lst:RelationTypeExamples},
-they can be accessed using the ``feels'' keyword.
+they can be accessed using the $feels$ keyword.
 
 \textbf{Directional relations} connect two actors asymmetrically. In the first
 directional application example in \Cref{lst:RelationTypeExamples}, Alice
@@ -247,7 +247,7 @@ feeling is not necessarily mutual.
 By adding exclusive to the type definition, the engine will ensure that the primary actor
 (in the case of \Cref{lst:RelationTypeExamples}, Alice or Michelle) only has one outgoing
 relation of this type at any given time. For example, Michelle can only be in one
-place at a time, so it doesn't make sense for her to have more than one ``is\_in'' relation.
+place at a time, so it doesn't make sense for her to have more than one $is\_in$ relation.
 If a new relation is created that conflicts, it will automatically remove the old one.
 This is very useful for switching the state of a character between mutually exclusive states,
 such as them moving from one room to another. Without this, one would have to manually
@@ -293,41 +293,41 @@ practice greet (Greeter, Greeted) {
 practice.greet.jacob.alaina { exclamation: "Hey [Greeted]!" }
 \end{lstlisting}
 
-All practices have participants. In \Cref{lst:ExamplePractice}, there are two: Greeter
-and Greeted, and each will play a unique role in the practice. This behavior is
-common across all practices. These parameters (Greeter and Greeted) will then become
-bound to jacob and alaina respectively for any expressions or strings within that
-particular instance, as can be seen throughout the example, where Greeter and
-Greeted are treated as regular actors in the expression despite not being defined
-in the world. The example also specifies an ``exclamation'' field, which
+All practices have participants. In \Cref{lst:ExamplePractice}, there are two: $Greeter$
+and $Greeted$, and each will play a unique role in the practice. This behavior is
+common across all practices. These parameters ($Greeter$ and $Greeted$) will then become
+bound to $jacob$ and $alaina$ respectively for any expressions or strings within that
+particular instance, as can be seen throughout the example, where $Greeter$ and
+$Greeted$ are treated as regular actors in the expression despite not being defined
+in the world. The example also specifies an $exclamation$ field, which
 allows for the specific greeting to be customized. This is another use of fields,
 alongside tracking changing state, which allows for characters to be individually
 expressive even when their actions are driven by generic practices.
 
-As seen in \Cref{lst:ExamplePractice}, practices also create a ``self'' binding for any
+As seen in \Cref{lst:ExamplePractice}, practices also create a $self$ binding for any
 expressions within them, allowing for easy access to internal fields or easy self-removal
 after practice completion.
 
 Each practice provides a set of actions that allow actors involved in that practice
-to act. Each action will only be available if all of its conditions evaluate to true,
-as dictated by the mandatory conditions field.
+to act. Each action will only be available if all of its conditions evaluate to $true$,
+as dictated by the mandatory $conditions$ field.
 
 There are four total mandatory fields in actions:
 
 \begin{itemize}
-    \item The ``for'' field specifies which participant the action should be available
-    for; in this case, greeting is an action available to the Greeter. An action can
+    \item The $for$ field specifies which participant the action should be available
+    for; in this case, greeting is an action available to $Greeter$. An action can
     only be made available to one participant, so if you want another similar action,
     it must be written explicitly with the participants flipped. This could be seen
     as a limitation, but it also helps ensure that actor-dependent outcomes don't get
     mixed up in a single action and is rarely an issue in practice.
-    \item The ``name'' field represents the display name of the action, as it will
+    \item The $name$ field represents the display name of the action, as it will
     appear to the player. The display names of parameters can be inserted here by
     putting them in square brackets, as shown in the example.
-    \item The ``conditions'' field is a list of expressions that must all evaluate to
+    \item The $conditions$ field is a list of expressions that must all evaluate to
     true for the action to be available. Any relation existences guaranteed here will
     carry over as guarantees for outcomes.
-    \item The ``outcomes'' field contains a series of world state changes that occur when
+    \item The $outcomes$ field contains a series of world state changes that occur when
     this action is performed. Options for mutations are detailed below.
 \end{itemize}
 
@@ -337,29 +337,29 @@ they would like, and they often do in more complex scenarios.
 Refered to internally as effects, these are the possible outcomes an action can have:
 
 \begin{itemize}
-    \item The ``broadcast'' and ``say'' effects allow for text to be printed to the screen.
+    \item The $broadcast$ and $say$ effects allow for text to be printed to the screen.
     If the text is broadcasted, it will appear as system text, otherwise it will appear
     as though the character themselves is saying the line. The line can be any expression
     that evaluates to a string, which allows for fairly expressive speech, as explored
     in \Cref{lst:ExamplePractice}.
-    \item The ``activate'' and ``deactivate'' effects flag actors as either able or unable
+    \item The $activate$ and $deactivate$ effects flag actors as either able or unable
     to perform actions. For example, this might be used to stop an unconscious person
     from taking further action.
-    \item The ``hide'' and ``unhide'' effects flag actors as either visible or invisible
+    \item The $hide$ and $unhide$ effects flag actors as either visible or invisible
     on the frontend. This may be used to reveal the existence of a previously unknown
     character.
-    \item The ``delete'' effect removes a relation from the world. Actors cannot be deleted.
-    This is commonly used as ``delete self'' to remove practices after they have served
+    \item The $delete$ effect removes a relation from the world. Actors cannot be deleted.
+    This is commonly used as $delete self$ to remove practices after they have served
     their course.
-    \item The ``create'' effect instantiates a new relation into the world. If an identical
+    \item The $create$ effect instantiates a new relation into the world. If an identical
     relation already exists, it will be replaced with this new one. This is how relations
     create other relations, which is an important mechanism in keeping the world running.
     For example, if an argue practice escalates to a high degree, an action may become
     available for one of the participants that allows for them to initiate a divorce
     practice if they are married.
-    \item The `set'' effect sets a single field of a relation to a new value, which can be
+    \item The $set$ effect sets a single field of a relation to a new value, which can be
     any expression, as long as it resolves to something within the target field type.
-    \item The ``increase'' and ``cycle'' effects are both used to increase or decrease the
+    \item The $increase$ and $cycle$ effects are both used to increase or decrease the
     value of a number or state of a variant, and behave differently on the boundaries of
     the range. Cycle will cause numbers to wrap around the ends of their ranges and variants
     to jump to the other end once exhausted, while increase will stop at boundaries.
@@ -370,21 +370,21 @@ Refered to internally as effects, these are the possible outcomes an action can 
 There are five types a field can be:
 
 \begin{itemize}
-    \item Numeric ranges: A field can be defined as a numeric range, such as ``0..10''.
-    This means that the field can take on any value between 0 and 10, inclusive.
+    \item Numeric ranges: A field can be defined as a numeric range, such as $0..10$.
+    This means that the field can take on any value between $0$ and $10$, inclusive.
     Numbers are stored as decimal values.
     \item Variant lists: A field can also be defined as a list of named variants,
-    such as ``calm | tense | furious''. This means that the field can only take on one
+    such as $calm\ \text{\textbar}\ tense\ \text{\textbar}\ furious$. This means that the field can only take on one
     of those three values. This kind of value is often referred to as an enum in other
     languages. When assigning to or accessing this field, to avoid collisions with
-    sentences, the language requires you prefix the value with a ``\#''.
+    sentences, the language requires you prefix the value with a $\#$.
     \item Actor References: A field can reference an actor in the world, and will
     be type checked upon world load to make sure the actor exists or the binding is
     valid. When assigning to or accessing this field, to avoid collisions with
-    sentences, the language requires you to prefix the value with a ”@“.
+    sentences, the language requires you to prefix the value with a $@$.
     \item String: A field can be a string, which can take on any value. When assigning
     to or accessing this field, the value must be wrapped in quotes.
-    \item Boolean: A field can be a boolean, which can be either true or false.
+    \item Boolean: A field can be a boolean, which can be either $true$ or $false$.
 \end{itemize}
 
 \section{Simple Example} \label{sec:SimpleExample}
@@ -394,7 +394,7 @@ a condensed manner. It includes two characters, Jacob and Alaina. Jacob wants to
 people happy, but can only do so by greeting Alaina, which he can only do if they are
 in the same place. Alaina starts off feeling sad and is on the street, while Jacob is
 in the house. To end the simulation, Alaina must first move to the house (which is
-permitted via the ``practice.move.alaina.street.house'' declaration that puts her in that
+permitted via the $practice.move.alaina.street.house$ declaration that puts her in that
 practice at initialization), and then Jacob can greet her to make her happy, which
 satisfies one of his goals.
 
