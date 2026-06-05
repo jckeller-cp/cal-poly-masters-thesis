@@ -1,0 +1,55 @@
+% Requires: tikz
+% Packages: \usetikzlibrary{arrows.meta, positioning}
+% Usage:
+%   \begin{figure}[h]
+%     \centering
+%     \begin{tikzpicture}
+%       \input{world_state_graph.tikz}
+%     \end{tikzpicture}
+%     \caption{Example world setup where Alice is greeting Bob and Bob likes Alice.}
+%   \end{figure}
+
+% ── Node styles ──────────────────────────────────────────────────────────────
+\tikzset{
+  actor/.style={
+    circle, draw=black, fill=white,
+    minimum size=1.1cm, line width=0.6pt,
+    font=\small, align=center
+  },
+  relation/.style={
+    rectangle, draw=black, fill=white,
+    minimum width=1.6cm, minimum height=1.0cm,
+    rounded corners=3pt, line width=0.6pt,
+    font=\small, align=center
+  },
+  edge/.style={-, line width=0.5pt},
+  indexlabel/.style={font=\fontsize{8}{9}\selectfont, fill=white, inner sep=1pt}
+}
+
+% ── Nodes ────────────────────────────────────────────────────────────────────
+% Actors on left and right; relations stacked vertically in the center
+
+\node[actor] (alice) at (0,  0)    {Alice};
+\node[actor] (bob)   at (6,  0)    {Bob};
+
+\node[relation] (greet) at (3,  0.9) {greet\\[1pt]\textit{\fontsize{7}{8}\selectfont Practice}};
+\node[relation] (likes) at (3, -0.9) {likes\\[1pt]\textit{\fontsize{7}{8}\selectfont Directional}};
+
+% ── Edges ────────────────────────────────────────────────────────────────────
+
+% Alice -- greet (index: 0)
+\draw[edge] (alice.north east) -- (greet.west)
+  node[indexlabel, midway, above=3pt] {index: 0};
+
+% Bob -- greet (index: 1)
+\draw[edge] (bob.north west) -- (greet.east)
+  node[indexlabel, midway, above=3pt] {index: 1};
+
+% Alice -- likes (index: 1)
+\draw[edge] (alice.south east) -- (likes.west)
+  node[indexlabel, midway, below=3pt] {index: 1};
+
+% Bob -- likes (index: 0)
+\draw[edge] (bob.south west) -- (likes.east)
+  node[indexlabel, midway, below=3pt] {index: 0};
+

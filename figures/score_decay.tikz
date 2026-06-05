@@ -1,0 +1,47 @@
+% Requires: tikz
+% Packages: \usetikzlibrary{arrows.meta, positioning}
+% Usage:
+%   \begin{tikzpicture}
+%     \input{score_decay.tikz}
+%   \end{tikzpicture}
+
+\tikzset{
+  opbox/.style={
+    rectangle, draw=black, fill=white,
+    minimum width=3.4cm, minimum height=0.7cm,
+    rounded corners=2pt, line width=0.5pt,
+    font=\small\ttfamily, align=center
+  },
+  connector/.style={-, line width=0.5pt},
+  scorelabel/.style={
+    font=\fontsize{7}{9}\selectfont\itshape,
+    text=black
+  }
+}
+
+% ── Left column ──────────────────────────────────────────────────────────────
+\node[opbox] (pa1)       at (0,  0)    {Positive Action};
+\node[opbox, below=0.55cm of pa1]  (dn1)  {Do Nothing};
+\node[opbox, below=0.55cm of dn1]  (dn2)  {Do Nothing};
+
+\draw[connector] (pa1.south) -- (dn1.north);
+\draw[connector] (dn1.south) -- (dn2.north);
+
+% Score labels (right side of each left-column node)
+\node[scorelabel, left=0.15cm of pa1.west, anchor=east] {Score: 5.0};
+\node[scorelabel, left=0.15cm of dn1.west, anchor=east] {Score: 4.0};
+\node[scorelabel, left=0.15cm of dn2.west, anchor=east] {Score: 3.2};
+
+% ── Right column (single node, aligned vertically with dn1) ──────────────────
+\node[opbox, right=2.4cm of dn2] (pa2) {Positive Action};
+
+% Score label (left side of right-column node)
+\node[scorelabel, right=0.15cm of pa2.east, anchor=west] {Score: 5.0};
+
+% ── Bottom: Current State ─────────────────────────────────────────────────────
+% Centered between dn2 and pa2
+\node[opbox, below=1.1cm of dn2, xshift=2.85cm] (cur) {Current State};
+
+% Diagonal connectors from dn2 and pa2 down to cur
+\draw[connector] (dn2.south)  -- (cur.north west);
+\draw[connector] (pa2.south)  -- (cur.north east);

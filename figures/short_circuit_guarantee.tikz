@@ -1,0 +1,138 @@
+% Requires: tikz, xcolor
+% Packages: \usetikzlibrary{arrows.meta, positioning, fit, backgrounds}
+% Usage: place inside a tikzpicture environment, e.g.:
+%   \begin{tikzpicture}
+%     \input{short_circuit_guarantee.tikz}
+%   \end{tikzpicture}
+
+% ── Colors ──────────────────────────────────────────────────────────────────
+\definecolor{coralFill}{RGB}{250,236,231}
+\definecolor{coralBorder}{RGB}{152,60,29}
+\definecolor{coralText}{RGB}{152,60,29}
+\definecolor{coralSub}{RGB}{216,90,48}
+\definecolor{tealFill}{RGB}{225,245,238}
+\definecolor{tealBorder}{RGB}{15,110,86}
+\definecolor{tealText}{RGB}{8,80,65}
+\definecolor{tealSub}{RGB}{29,158,117}
+\definecolor{guaranteeFill}{RGB}{225,245,238}
+\definecolor{neutralFill}{RGB}{255,255,255}
+\definecolor{neutralBorder}{RGB}{0,0,0}
+\definecolor{mutedText}{RGB}{0,0,0}
+\definecolor{scArrow}{RGB}{153,60,29}
+\definecolor{scArrowLight}{RGB}{180,100,60}
+
+% ── Arrow styles ─────────────────────────────────────────────────────────────
+\tikzset{
+  guaranteeArrow/.style={-{Stealth[length=5pt]}, thick, tealBorder},
+  falseArrow/.style={-{Stealth[length=5pt]}, thick, scArrow, dashed},
+  scArc/.style={-{Stealth[length=4pt]}, mutedText, dashed, thin},
+  legendTrue/.style={-{Stealth[length=4pt]}, thick, tealBorder},
+  legendFalse/.style={-{Stealth[length=4pt]}, thick, scArrow, dashed},
+  flowDown/.style={-{Stealth[length=4pt]}, tealBorder, dashed, thin},
+}
+
+% ── Nodes ────────────────────────────────────────────────────────────────────
+
+% LHS: existence check
+\node[
+  draw=coralBorder, fill=coralFill, rounded corners=6pt,
+  minimum width=5.2cm, minimum height=1.8cm,
+  line width=0.4pt,
+  align=center
+] (lhs) at (0,0) {
+  \textcolor{coralText}{\texttt{alice.feels.happy}}\\[2pt]
+  \textcolor{coralSub}{\small existence check}
+};
+
+% AND operator
+\node[right=0.55cm of lhs, text=mutedText] (andop) {\texttt{and}};
+
+% RHS: safe field access
+\node[
+  draw=tealBorder, fill=tealFill, rounded corners=6pt,
+  minimum width=6.4cm, minimum height=1.8cm,
+  line width=0.4pt,
+  align=center,
+  right=0.55cm of andop
+] (rhs) {
+  \textcolor{tealText}{\texttt{alice.feels.happy.amount}}\\[2pt]
+  \textcolor{tealSub}{\small safe field access}
+};
+
+% Short-circuit arc label above
+\node[above=0.65cm of andop, text=mutedText, font=\small] (sclabel) {short-circuits $\to$};
+
+% ── Section 2 flow nodes ─────────────────────────────────────────────────────
+
+% LHS evaluation node
+\node[
+  draw=coralBorder, fill=coralFill, rounded corners=8pt,
+  minimum width=5.2cm, minimum height=1.9cm,
+  line width=0.4pt,
+  align=center,
+  below=1.4cm of lhs
+] (lhsFlow) {
+  \textcolor{coralText}{\textbf{LHS evaluates}}\\[2pt]
+  \textcolor{coralSub}{\small\texttt{alice.feels.happy} exists?}\\
+  \textcolor{mutedText}{\small\itshape returns bool}
+};
+
+% RHS flow node
+\node[
+  draw=tealBorder, fill=tealFill, rounded corners=8pt,
+  minimum width=6.4cm, minimum height=1.9cm,
+  line width=0.4pt,
+  align=center,
+  right=0.55cm of andop |- lhsFlow
+] (rhsFlow) {
+  \textcolor{tealText}{\textbf{RHS only runs if true}}\\[2pt]
+  \textcolor{tealSub}{\small\texttt{alice.feels.happy.amount}}\\
+  \textcolor{mutedText}{\small type checker knows it exists}
+};
+
+% FALSE outcome box
+\node[
+  draw=neutralBorder, fill=neutralFill, rounded corners=6pt,
+  minimum width=5.2cm, minimum height=1.1cm,
+  line width=0.4pt,
+  align=center,
+  below=1.2cm of lhsFlow
+] (falseBox) {
+  \textcolor{mutedText}{\small RHS never reached}
+};
+
+% ── Arrows ───────────────────────────────────────────────────────────────────
+
+% Short-circuit arc (top, over and operator)
+\draw[scArc]
+  (lhs.north) .. controls +(0.6,0.7) and +(-0.6,0.7) .. (rhs.north);
+
+% true path: LHS flow → RHS flow
+\draw[guaranteeArrow]
+  (lhsFlow.east) -- (rhsFlow.west)
+  node[midway, above, font=\small, text=tealBorder] {true};
+
+% false path: LHS flow → false box
+\draw[falseArrow]
+  (lhsFlow.south) -- (falseBox.north)
+  node[midway, left, font=\small, text=scArrow] {false / absent};
+
+% ── Legend ───────────────────────────────────────────────────────────────────
+
+\node[below=1.6cm of falseBox, anchor=west] (legstart) {};
+
+\coordinate (legA1) at ($(falseBox.south west) + (0,-0.9)$);
+\coordinate (legA2) at ($(legA1) + (1.0,0)$);
+\coordinate (legB1) at ($(legA2) + (0.3,0)$);
+
+% ── Background panel behind top expression ───────────────────────────────────
+\begin{pgfonlayer}{background}
+  \node[
+    fill=neutralFill,
+    rounded corners=8pt,
+    fit=(lhs)(andop)(rhs)(sclabel),
+    inner sep=8pt,
+    draw=neutralBorder,
+    line width=0.4pt
+  ] {};
+\end{pgfonlayer}

@@ -1,0 +1,70 @@
+% Requires: tikz
+% Packages: \usetikzlibrary{arrows.meta, positioning}
+% Usage:
+%   \begin{tikzpicture}
+%     \input{world_state_rollback.tikz}
+%   \end{tikzpicture}
+
+\tikzset{
+  opbox/.style={
+    rectangle, draw=black, fill=white,
+    minimum width=5.2cm, minimum height=0.75cm,
+    rounded corners=2pt, line width=0.5pt,
+    font=\small\ttfamily, align=center
+  },
+  connector/.style={-, line width=0.5pt},
+  rollbackarrow/.style={
+    ->, dashed, line width=0.6pt,
+    >={Stealth[length=5pt]}
+  },
+  sidenote/.style={
+    font=\fontsize{7}{9}\selectfont\itshape,
+    text=black, align=right, text width=3.8cm
+  }
+}
+
+% ── Stack (bottom = oldest, top = most recent) ───────────────────────────────
+% We lay out top-to-bottom in reading order.
+% y positions (center): ellipsis=0, then step down 1.2cm each node + 0.5cm connector
+
+\node[font=\small, text=gray]          (ellipsis)   at (0,  0)    {\texttt{...}};
+\node[opbox, below=0.4cm of ellipsis]  (unhide)                   {\texttt{unhide alice}};
+\node[opbox, below=0.55cm of unhide]   (addkitchen)               {\texttt{add alice.is\_in.kitchen}};
+\node[opbox, below=0.55cm of addkitchen, text=gray] (removehappy)            {\texttt{remove alice.feels.happy}};
+\node[opbox, below=0.55cm of removehappy, text=gray] (addsad)                {\texttt{add alice.feels.sad}};
+
+% ── Vertical connectors ───────────────────────────────────────────────────────
+\draw[connector] (ellipsis.south)      -- (unhide.north);
+\draw[connector] (unhide.south)        -- (addkitchen.north);
+\draw[connector] (addkitchen.south)    -- (removehappy.north);
+\draw[connector] (removehappy.south)   -- (addsad.north);
+
+% ── Side annotations (left) ──────────────────────────────────────────────────
+% "snapshot before action that made Alice sad" — left of addkitchen
+\node[sidenote, left=0.3cm of addkitchen, anchor=east]
+  {snapshot before action\\that made Alice sad};
+
+% small bracket/pointer from note to node
+\draw[gray, line width=0.4pt, ->]
+  ([xshift=-0.3cm] addkitchen.west) -- (addkitchen.west);
+
+% "post-action state: score -5" — left of addsad
+\node[sidenote, left=0.3cm of addsad, anchor=east]
+  {post-action state: score -5};
+
+\draw[gray, line width=0.4pt, ->]
+  ([xshift=-0.3cm] addsad.west) -- (addsad.west);
+
+% ── Rollback arrow (right side, addsad -> addkitchen) ────────────────────────
+% Route: out of addsad.east, arc right, in to addkitchen.east
+\draw[rollbackarrow]
+  (addsad.east)
+    -- ++(1.2, 0)
+    -- ++(0, 2.1)
+    -- (addkitchen.east)
+  node[
+    midway,
+    right=1.25cm of removehappy,
+    font=\fontsize{7}{9}\selectfont\itshape,
+    text=black, align=center, text width=1.6cm
+  ] {rollback after\\evaluation};

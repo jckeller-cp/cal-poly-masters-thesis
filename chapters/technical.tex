@@ -71,9 +71,16 @@ pointed to while also automatically invalidating pointers to removed relations. 
 Each edge between agents and relations and vice versa also contains a small amount of
 utility information that helps different world operations complete their tasks
 efficiently, such as storing the index an agent occupies within a relation to identify
-which edge of a directional it is on.
+which edge of a directional it is on. An example world state can be found in \Cref{fig:WorldStateGraph}.
 
-(TODO: visual)
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[scale=1.25]
+        \input{figures/world_state_graph.tikz}
+    \end{tikzpicture}
+    \caption{Example world setup where Alice is greeting Bob and Bob likes Alice.}
+    \label{fig:WorldStateGraph}
+\end{figure}
 
 \section{Type Checking} \label{sec:TypeChecking}
 
@@ -87,9 +94,16 @@ $alice.feels.happy$ evaluates to a boolean type, but it also carries the guarant
 if it is true, the $alice.feels.happy$ will exist. Then, since the right hand of an
 $and$ expression is only evaluated if the left hand side is $true$, we can guarantee
 in the right hand branch that $alice.feels.happy$ will exist and can have its fields
-accessed.
+accessed. This example is illustrated visually in \Cref{fig:ShortCircuitGuarantee}.
 
-(TODO: visual)
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[scale=1.25]
+        \input{figures/short_circuit_guarantee.tikz}
+    \end{tikzpicture}
+    \caption{A visual representation of the type system's short-circuit guarantee.}
+    \label{fig:ShortCircuitGuarantee}
+\end{figure}
 
 Type checking ended up being a very necessary part of the system. Every major change
 or addition would typically result in a few type checker errors that had to be resolved.
@@ -114,8 +128,16 @@ the world state to a specific point in time. By storing changes to the world sta
 of distinct copies of the world state, the world can be very quickly iterated over
 to evaluate the scores of future states for the planning system. This technique was used in
 the original Praxis system and proves to be a flexible solution in this project as well. \cite{evans_ai_2015}
+A visualization of this in action can be found in \Cref{fig:WorldStateRollback}.
 
-(TODO: visual)
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[scale=1.25]
+        \input{figures/world_state_rollback.tikz}
+    \end{tikzpicture}
+    \caption{An example evaluation and rollback flowchart determining that an action that makes Alice sad would score poorly.}
+    \label{fig:WorldStateRollback}
+\end{figure}
 
 \section{Planning System} \label{sec:PlanningSystem}
 
@@ -148,10 +170,17 @@ even though one has multiple unnecessary steps. To avoid this problem, each chan
 decays when it is passed down the recursion change. In this case, the score delta from
 the initial world state to the state after $Positive Action$ is processed might be $5$,
 but after the two $Do Nothing$ actions, that score decays down to $3.2$, assuming a
-decay rate of $0.8$. This allows the planner to prioritize quick positive results over ones
-that may take several turns.
+decay rate of $0.8$. This can be seen in action in \Cref{fig:ScoreDecay}. This allows
+the planner to prioritize quick positive results over ones that may take several turns.
 
-(TODO: figure)
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[scale=1.25]
+        \input{figures/score_decay.tikz}
+    \end{tikzpicture}
+    \caption{Even though the chain of actions on both sides end up in the same spot, the one on the left "decays" due to its longer length.}
+    \label{fig:ScoreDecay}
+\end{figure}
 
 One limitation of this system is that it only accounts for the actions your character
 could take. This is primarily because the core Praxsmith engine has no notion of
