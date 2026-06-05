@@ -16,7 +16,7 @@ There were a few motivating factors behind this split-architecture design:
     This allowed for cleaner logic and fewer issues while developing, which greatly
     decreased production time.
     \item Centralizing in Rust provides the opportunity for integration with other tools,
-    like the Unity game engine. (TODO: cite?) Bindings from Rust to other languages are
+    like the Unity game engine. Bindings from Rust to other languages are
     widely available, such as the ``wasm-bindgen'' crate used for the web interface. As of
     now, there are only core and WASM crates, but it is trivial to add new ones that
     act as a thin wrapper around the core API.
@@ -66,7 +66,7 @@ during runtime.
 
 Relations need a slightly different solution, as they can be dynamically added and
 removed. For this, generational indices were used, which allow for relations to be
-pointed to while also automatically invalidating pointers to removed relations. (TODO: cite)
+pointed to while also automatically invalidating pointers to removed relations. \cite{weissflog_handles_2018}
 
 Each edge between agents and relations and vice versa also contains a small amount of
 utility information that helps different world operations complete their tasks
@@ -112,9 +112,8 @@ require an additional transaction layer to be added to the pipeline. This layer 
 all low-level mutations made to the world, and allows for snapshotting and rollbacks of
 the world state to a specific point in time. By storing changes to the world state instead
 of distinct copies of the world state, the world can be very quickly iterated over
-to evaluate the scores of future states for the planning system. This is one large
-performance enhancement over the original Praxis, which used copies for evaluating actions (TODO: cite),
-and opens the door for planning further into the future.
+to evaluate the scores of future states for the planning system. This technique was used in
+the original Praxis system and proves to be a flexible solution in this project as well. \cite{evans_ai_2015}
 
 (TODO: visual)
 
@@ -126,15 +125,15 @@ goal with a weight of $5$ that counts all of the happy people in the world, acti
 make people happy will be scored with $5$ per person, including anyone who becomes unhappy
 counting as negative score.
 
-As stated previously, the original Praxis created a new world state evaluated for each
-action and ran goal evaluations on each of those states to determine the score for
+One possible implementation would be to create a new world state evaluated for each
+action and run goal evaluations on each of those states to determine the score for
 each action. This is an elegant solution from a functional standpoint, but it does
 introduce the inefficiency of cloning the world every time an action is evaluated.
 
-Praxsmith, on the other hand, keeps track of every change in the world state and
-provides the ability to roll world state back through a transactional interface. For
-every action, the current point in the change log is recorded, the action is evaluated
-and scored, and then the world is rolled back to its initial state.
+Instead, inspired by Praxis \cite{evans_ai_2015}, Praxsmith keeps track of every change
+in the world state and provides the ability to roll world state back through a transactional
+interface. For every action, the current point in the change log is recorded, the action is
+evaluated and scored, and then the world is rolled back to its initial state.
 
 This efficiency allows for higher depths of evaluations to be calculated, which is
 provided by a variable on the frontend when querying for agent actions. A depth of $1$
@@ -157,5 +156,5 @@ that may take several turns.
 One limitation of this system is that it only accounts for the actions your character
 could take. This is primarily because the core Praxsmith engine has no notion of
 actor turn order, so it wouldn't know whose actions to evaluate next. This is explained
-more in the Limitations section (TODO: ref), but centralizing action order would allow
+more in \Cref{sec:ActorTurns}, but centralizing action order would also allow
 for characters to take the potential actions of others into account.
