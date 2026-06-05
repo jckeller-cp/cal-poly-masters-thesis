@@ -121,7 +121,7 @@ query from the sentence, ensures it is well-formed and refers to a relation type
 and actors that exist, and then forwards that request to the world, propagating
 and adding context to any errors it encounters along the way.
 
-Simulation functions that modify the world, such as most of the practice outcomes\/effects,
+Simulation functions that modify the world, such as most of the practice outcomes\slash effects,
 require an additional transaction layer to be added to the pipeline. This layer records
 all low-level mutations made to the world, and allows for snapshotting and rollbacks of
 the world state to a specific point in time. By storing changes to the world state instead
