@@ -1,1 +1,113 @@
 \chapter{User Study} \label{sec:UserStudy}
+
+As a part of this research project, outreach was conducted to individuals in the
+game playing\/development space. A survey was sent out to acquaintances of the
+author, as well as members of Cal Poly Game Development Club, collecting information
+on prior experience of the participants as well as information about how they used
+the system. All survey materials were approved by the Cal Poly San Luis Obispo IRB
+(IRB Protcol \#2026-080). There were 4 total responses to the final survey, and
+below are some primary takeaways from the responses made by those who completed it.
+
+\section{Engine Capabilities} \label{sec:EngineCapabilities}
+
+Users seemed to be satisfied with the capabilities of the language and engine. Two
+expressed this directly, stating that they feel like they could do much more with
+it if given the time to explore. One mentioned that the modularity of the practice
+system gave them many options for setting up their scenarios and dropping characters
+into different situations.
+
+As many critiques as there were, there appeared to be minimal concerns about the
+core concepts explored with Praxsmith. All participants were satisfied with their
+resulting product after experimentation. The challenge then becomes adjusting how
+they interact with those inner systems so that they can convey their ideas more
+easily.
+
+\section{Documentation And Examples} \label{sec:DocumentationAndExamples}
+
+As the developer of any project, it is hard to evaluate the approachability of a
+system from the standpoint of someone who has never touched it. Great care was taken
+in building a documentation page for the language, including tips on how to use it
+and three short examples showcasing different features and potentials.
+
+All participants had positive reviews about the documentation and examples, with
+2\/4 participants rating the usefulness of the documentation at full score on the
+likert scale and 3\/4 participants giving a full score to the provided examples.
+One user pointed out in one of their responses that a question they had showed up
+in one of the examples, allowing them to quickly move forward with their project.
+
+As a contrary point, one user expressed confusion about the purpose of the
+$delete\ self$ outcome found in many of the example practices, which is a clarity
+issue with the documentation. This confusion proves that although the existence of the
+documentation was much appreciated, there are still holes in it that should be
+identified and patched by more user studies.
+
+\section{More Types} \label{sec:MoreTypes}
+
+As one of the users was experimenting with an inventory system within their game,
+they expressed the desire for array type support within the language. This would allow
+for more complex interaction, like characters holding several items at once or
+remembering a series of actors for later actions.
+
+It is worth noting that arrays are very distinct datatypes and would alter the shape
+of the language significantly. It was for this reason that they were not included, and
+situations such as actors holding many things can instead be represented by an
+exclusive $is\_held\_by$ relation and by adding dummy objects into the world.
+
+However, this complaint highlights a shortcoming of the language either way. Either
+the existing solution needs to be made more obvious and easier to work with, or
+arrays should be added into the system as a way to support this functionality.
+Inventory systems are incredibly common in games, so more research into this area
+would be appropriate.
+
+\section{If-Statements In Effects} \label{sec:IfStatementsInEffects}
+
+One user noted the lack of a proper system around comparisons within the language.
+Praxsmith provides if-statements for boolean values in the form of $and$ short
+circuiting and can be extended to if\/else by adding $or$ and $not$ statements, but
+there are two main problems with this:
+
+\begin{itemize}
+    \item It is clunky. Especially once you get into if\/else territory, the long
+    expressions quickly become unreadable.
+    \item It only works when returning boolean values, which is okay for conditions
+    but outcomes\/effects suffer as a result. Changing dialog slightly based on some
+    state variable is one example of where this might be useful, as that currently
+    requires one actions within a practice for each dialog choice, which gets
+    repetitive quickly. One survey participant pointed out this repetition in particular
+    as a point of inconvenience.
+\end{itemize}
+
+This is likely the first target for language design change, as it would improve quality
+of life greatly and allow for much more dynamic and expressive practice outcomes.
+
+\section{Unique Syntax} \label{sec:UniqueSyntax}
+
+Users of the language were universally surprised by the syntax at first, but said they
+were able to adjust quickly. One user pointed out practices (e.g. $practice.greet.alice.bob$)
+as a core example, noting that it became intuitive after regular usage.
+
+This syntax is carried over from the sentences outlined in the original Praxis paper. (TODO: cite)
+Since this project no longer strictly follows the exclusion logic laid out in
+Praxis, sentences could be replaced with a more appropriate representation. On the other
+hand, they work nicely as a singular unit and may be the cleanest option, especially
+considering users seemed to adjust quickly. More research should be put into this
+possibility.
+
+\section{User Interface} \label{sec:UserInterface}
+
+Only two users mentioned minor complaints with the user interface of the project.
+One was to do with the visual highlighting being unclear, and another expressed that
+they would like to be able to see the scripts as they are playing the game for
+reference. Given the minimal nature of these complaints, it is reasonable to assume
+that the development environment did not significantly impact user experience with the language.
+
+\section{Survey Bias} \label{sec:SurveyBias}
+
+This survey came with a significant amount of selection bias, as all respondents
+to the preliminary survey had high experience with programming languages,
+likely due to the areas this project was advertised. An important part of
+this project was how easy the system is to use for writers, which ended up not
+being determinable from the selection of survey participants. More analysis of
+this point can be found in \Cref{sec:WriterFriendliness}, but it is worth noting
+that more trials should be run specifically with writers who are not familiar
+with programming for a more holistic interpretation.
