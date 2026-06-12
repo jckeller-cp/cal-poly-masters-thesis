@@ -2,7 +2,7 @@
 
 Praxsmith pulled inspiration from many emergent narrative projects, but primarily
 Praxis, which laid the scaffolding for the relation types, agent goals, and general
-syntax. Design elements from other research listed in \Cref{sec:RelatedWork} were
+syntax. Design elements from other research listed in \Cref{sec:BackgroundAndLiteratureReview} were
 also used. The result was a domain-specific language which, although flawed in
 some ways, showed that a powerful system could be created by combining these
 components in a more modern setting.
@@ -16,29 +16,81 @@ system.
 
 \section{Limitations} \label{sec:Limitations}
 
+\subsection{Incomplete Survey} \label{sec:IncompleteSurvey}
+
+Due to timeline constraints, the survey and experiment trials conducted for this
+project provided incomplete results. Only 4 people completed the trials all the
+way through, and the average time spent on the project was around 1 hour, despite
+a target of 3 to 6 hours.
+
+With an involved project such as a development environment\slash game engine, it
+is difficult to find active participants willing to put in the time necessary to
+become familiar with a new technology. Further research could offer incentive,
+for example monetary, to drive longer participation times. Alternatively, a larger
+scale game project could be developed alongside the engine, which would allow for
+direct feedback from the authors most involved in the process. Larger projects
+like Comme il Faut \cite{mccoy_social_2014} and Versu \cite{nelson_prompter_2014} were
+also developed this way, with ``Prom Week'' and ``Blood and Laurels'' being
+the associated game projects respectively.
+
+\subsection{Survey Bias} \label{sec:SurveyBias}
+
+This survey came with a significant amount of selection bias, as all respondents
+to the preliminary survey had high experience with programming languages,
+likely due to the areas this project was advertised. An important part of
+this project was how easy the system is to use for writers, which ended up not
+being determinable from the selection of survey participants. For future research,
+more trials should be run specifically with writers who are not familiar
+with programming for a more holistic interpretation.
+
 The user response survey was a limiting factor on this research project. As stated
 in \Cref{sec:SurveyBias}, the outreach methods of the survey caused it to be skewed
 towards those who were already comfortable with programming, which means the writers
 who would be using the tool were not evaluated.
 
-The quantity and quality of responses could also be improved upon greatly. There were
-four participants total, each spending an average of about one hour on the project,
-which was enough for some superficial feedback but lacked the depth and breadth
-required for in-depth analysis. A larger pool of participants willing to dedicate more
-time to developing with Praxsmith would provide feedback from more varied perspectives
-who are also more familiar with the complex parts of the language.
+\subsection{Personal Bias} \label{sec:PersonalBias}
+
+As multiple of the trial participants were acquainted with one of the authors to varying
+degrees, there is personal bias embedded within the results as well. Casual channels
+of communciation (Discord messages) were used during the experimentation stage for
+questions and feedback about the systems. Although all participants completed the
+surveys as intended, this personal bias cannot be overlooked and should be addressed
+in future research by conducting a more repeatable experiment.
 
 \section{Future Work} \label{sec:FutureWork}
 
-To resolve the above limitation, one avenue for future work is to trial a longer-term
-project using Praxsmith to evaluate how it works in a real-world scenario.
+\subsection{Improved Studies} \label{sec:ImprovedStudies}
+
+To address the survey limitations enumerated in \Cref{sec:Limitations}, more thoroughly
+conducted studies could be used. By offering incentive to participants, broadening the
+pool of outreach, and allowing for more time to experiment, survey results would cover
+a much more accurate representation of the intended audience.
+
+\subsection{Long-Term Project} \label{sec:LongTermProject}
+
+Another avenue to resolve the evaluation limitations is to trial a longer-term project
+using Praxsmith to evaluate how it works in a real-world scenario. As noted in \Cref{sec:Limitations},
+Comme il Faut \cite{mccoy_social_2014} and Versu \cite{nelson_prompter_2014} had similar
+associated projects, allowing for the developers to build off of their own experiences
+as users of the system and more accurately evaluate its capabilities and weaknesses.
+
+\subsection{Engine And Interface Improvements} \label{sec:EngineAndInterfaceImprovements}
 
 There are also many potential improvements to the engine and language that would
-make it easier to use from the developer standpoint, as outlined in \Cref{sec:UserStudy}
-and \Cref{sec:DeveloperEvaluation}.
+make it easier to use from the developer standpoint, as outlined in \Cref{sec:Evaluation}.
 
-Perhaps the foremost technical opportunity for future research is adding another
-abstracted language on top of Praxsmith, similar to what Prompter is to Praxis.
-\cite{nelson_prompter_2014} This would likely give much better results for a
-survey of writers working with this project, and it would still give developers
-the flexibility to realize the full potential of the engine.
+Perhaps the foremost technical opportunity for future research is expanding upon the
+authorability of Praxsmith by adding either:
+
+\begin{itemize}
+    \item A higher level language that writes like a play script, something
+    authors are likely familiar with. This is what Prompter does for the Versu engine.
+    \cite{nelson_prompter_2014} This would likely give much better results for a
+    survey of writers working with this project, and it would still give developers
+    the flexibility to realize the full potential of the engine.
+    \item An authoring user interface that addresses some of the verbosity and
+    bloating observed during usage of the Praxsmith language. The authors of the
+    Ensemble Engine recognized this limitation and addressed it with a fully featured
+    interface, \cite{samuel_ensemble_2015} so a similar extension is worth looking
+    into for Praxsmith, potentially replacing the scripting language altogether.
+\end{itemize}
