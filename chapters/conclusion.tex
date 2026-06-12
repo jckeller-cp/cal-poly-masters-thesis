@@ -14,6 +14,47 @@ survey bias and response analysis leads the author to believe that the developme
 experience could be greatly improved with tweaks to the language and underlying
 system.
 
+\section{Research Question Answers} \label{sec:ResearchQuestionAnswers}
+
+\textbf{What elements make up a successful character-focused narrative DSL?}
+
+As explored in \Cref{sec:PrimaryInspirations}, there are many contributors to a
+successful character-focused narrative DSL.
+
+\begin{itemize}
+    \item \textbf{Low Verbosity:} Praxsmith suffers from a bloating issue, where
+    even simple practices can end up taking a lot of space and being hard to parse
+    through. Both Comme il Faut and Versu tackle this problem
+    in unique ways with great success from an authoring standpoint.
+    \item \textbf{Catching Errors:} Praxsmith has strong typing systems, which
+    noticeably catches many mistakes whilst developing a game. The Ensemble Engine
+    addresses this by having a debugger that was designed by one of the authors
+    after noticing a strong need for it.
+    \item \textbf{Moderate Flexibility:} Comme il Faut, as noted by the Ensemble
+    Engine authors, ended up being overly restrictive in the social simulation
+    space. On the other end, Praxis contains some freedoms that could easily lead
+    to runtime errors or logic bugs. This project attempts to balance between the
+    two, but more research should be done into how effective the approaches it
+    takes are.
+\end{itemize}
+
+\textbf{Is a structured relationship graph a useful way to model world state for
+writing autonomous characters?}
+
+Yes. Both Comme il Faut and Versu model their worlds in a similar way, although
+not explicitly. Through usage of Praxsmith, it became clear to both the survey
+participants and the authors that considering the social space as a network of
+relations between agents is an intuitive way to consider the world and opens up
+the door to powerful possibilities.
+
+\textbf{Can the fundamentals of Praxis and Comme il Faut be created
+in a modernized, type-safe scripting language?}
+
+Although Praxsmith lacked some crucial features, its fundamental construction proves
+that it is possible to modernize these concepts. This includes features like the concretely defined
+yet flexible relation types and the strict type checker, plus the layered nature of the
+project itself, allowing for integration with other engines.
+
 \section{Limitations} \label{sec:Limitations}
 
 \subsection{Incomplete Survey} \label{sec:IncompleteSurvey}

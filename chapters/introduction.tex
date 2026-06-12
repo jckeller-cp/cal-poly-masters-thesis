@@ -22,13 +22,11 @@ can be widely applied to existing systems.
 \section{Research Questions} \label{sec:ResearchQuestions}
 
 \begin{itemize}
-    \item What elements make up a successful character narrative DSL?
+    \item What elements make up a successful character-focused narrative DSL?
     \item Is a structured relationship graph a useful way to model world state for
     writing autonomous characters?
-    \item Can a modernized domain-specific language be effectively used to model
-    worlds with convincing and engaging characters?
-    \item How straightforward and efficient is it to use a Praxis-like framework to write
-    stories with characters at the center?
+    \item Can the fundamentals of Praxis and Comme il Faut be created
+    in a modernized, type-safe scripting language?
 \end{itemize}
 
 \section{Hypothesis} \label{sec:Hypothesis}
@@ -36,3 +34,20 @@ can be widely applied to existing systems.
 A modern domain-specific language can be created that is intuitive for authors to
 use, while also allowing for extensive flexibility and the ability to create emergent
 narratives by putting characters at the center of attention.
+
+\section{Contributions} \label{sec:IntroContributions}
+
+This paper aims to contribute an overview of what technologies and principles outline
+a successful character-narrative DSL and interpret those in a modern context. The
+implementation developed to address these points, Praxsmith, will include:
+
+\begin{itemize}
+    \item A flexible game engine built on top of a Rust backend and a web app frontend.
+    \item An actor-centric DSL inspired by Praxis, as well as many other influences
+    outlined in \Cref{sec:BackgroundAndLiteratureReview}.
+    \item Modern tooling, such as build-time type-checking to prevent runtime errors
+    and minimize logic bugs.
+    \item An authoring environment built into the web app.
+    \item An evaluation of usability and capability, comprising of author evaluation
+    plus a limited user study.
+\end{itemize}
