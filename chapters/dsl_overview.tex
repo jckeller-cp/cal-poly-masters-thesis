@@ -117,7 +117,8 @@ against this case or the type checker will not allow the world to build.
 Expressions are the logical glue that allow for reasoning about the state of the world.
 Sentences extract that information, and expressions allow you to ask more complex
 questions about it. They take a form very similar to traditional mathematical equations
-and predicate logic.
+and predicate logic. Both Praxis \cite{evans_ai_2015} and Comme il Faut \cite{mccoy_comme_2011}
+use predicate logic heavily as conditions, and Praxsmith is no different.
 
 \begin{lstlisting}[float=hb, caption=Example expression that returns true if the number of happy or excited people is greater than 3., label=lst:Expression]
 (count Person where (Person.feels.happy or Person.feels.excited)) > 3
@@ -198,7 +199,9 @@ to keep track of when first using the language.
 \section{Relation Types} \label{sec:RelationTypes}
 
 Relations in Praxsmith come in many different types, and each behaves very differently
-from the others.
+from the others. They are mainly derived from the emergent types the authors of Praxis
+noticed \cite{evans_ai_2015}, and many of the names are derived from the social fact
+types of the Ensemble Engine \cite{samuel_ensemble_2015}.
 
 \begin{lstlisting}[float=hb, caption=Examples of how to instantiate the simple relation types., label=lst:RelationTypeExamples]
 // Defining traits

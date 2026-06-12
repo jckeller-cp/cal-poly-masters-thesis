@@ -55,7 +55,7 @@ easily.
 
 \section{Documentation And Examples} \label{sec:DocumentationAndExamples}
 
-As the developer of any project, it is hard to evaluate the approachability of a
+As the author of any project, it is hard to evaluate the approachability of a
 system from the standpoint of someone who has never touched it. Great care was taken
 in building a documentation page for the language, including tips on how to use it
 and three short examples showcasing different features and potentials.
@@ -169,8 +169,8 @@ Praxis is only one part of the Versu project, the other part being a play script
 syntax named Prompter that behaves similarly to the Inform 7 project.
 \cite{nelson_prompter_2014} \cite{inform_7_inform_nodate} The lack of
 this final layer of abstraction is felt when using Praxsmith. Although the user study
-was not able to cover this due to selection bias (see \Cref{sec:SurveyBias}), the
-developer is not confident that those without programming experience would be able to
+was not able to cover this due to selection bias (see \Cref{sec:SurveyBias}), we are
+not confident that those without programming experience would be able to
 easily convey their ideas given the technicality of the language. As part of the
 purpose of this project was to allow for writers to express their ideas more easily,
 this is a significant limitation.
@@ -182,7 +182,7 @@ is an ideal next step.
 
 \section{Error Handling} \label{sec:ErrorHandling}
 
-One of the philosophies the developer stuck to while implementing the type checker is
+One of the philosophies we stuck to while implementing the type checker is
 that the user should never see runtime errors. Everything should either be caught
 during build time or fall back to predictable default cases. Especially in a simulation
 engine designed to handle heavily branching cases and unpredictable situations, the
@@ -190,7 +190,7 @@ risk of players encountering situations you never even thought to test is very h
 Logic errors are bound to occur either way, but the design of the language and a strict
 type checker can both prevent common mistakes.
 
-As far as the developer knows, the engine succeeds in this goal, and errors were caught
+As far as we know, the engine succeeds in this goal, and errors were caught
 as the world is built for all scenarios encountered. Appropriate context was provided
 as well, with line numbers for parsing errors thanks to the errors returned by ``pest''
 and a heirarchy of information that points to relevant type errors thanks to Rust's
@@ -205,7 +205,7 @@ a fallback case and clarify your intentions.
 
 \section{Actor Turns} \label{sec:ActorTurns}
 
-One topic that the developer did not find in the papers reviewed was the topic of
+One topic that we did not find commonly discussed in papers reviewed was the topic of
 turns during interactions. This is easy to gloss over until implementation, when it
 becomes unavoidable. In a conversation, people don't go in a circle. The conversation
 flows naturally (ideally), and people speak when they feel it is appropriate. If someone
@@ -220,9 +220,11 @@ One potential solution is turn forcing. After a complement, the turn could be ma
 redirected to the person receiving the complement, which forces them to address it
 without introduction. This also opens up the door to allow certain actors, like managers,
 to perform many actions at a time, which helps reduce the amount of oversight required.
+The Ensemble Engine implementation behaves similarly, where a character is expected to
+respond to a social exchange immediately when prompted. \cite{samuel_ensemble_2015}
 
-All of these solutions require integrating turns more closely with the engine, which
-the developer intentionally avoided because it places more authority on the one using
+Any proposed solution requires integrating turns more closely with the engine, which
+we intentionally avoided because it places more authority on the one using
 the engine. For example, a Unity integration would allow characters to interact in
 physical space with one another, which would trigger actions; however, moving action
 order to the engine level seems to be worth looking into for future research.
@@ -274,7 +276,7 @@ for an extended duration:
 \section{Actor Individuality} \label{sec:ActorIndividuality}
 
 In a framework where interactions are governed by generic social practices, individuality
-was a concern of the author going into development. However, during testing sessions,
+was a concern of ours going into development. However, during testing sessions,
 Being able to provide custom dialog as fields (e.g. a custom greeting to a $greet$
 practice) ended up being a clean solution to this. More research should be done into
 how this feels to use at a larger scale, but it feels to be an appropriate solution
