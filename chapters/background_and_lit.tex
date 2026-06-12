@@ -9,58 +9,107 @@ offer a limited set of experiences. Many players value the replayability of a ga
 referring to how much the game can be replayed and exlored before becoming stale,
 which is known to be difficult to combine with a strong narrative experience.
 
-By shifting focus away from the story as a whole and onto the characters themselves,
-much of the complexity that comes from branching storylines can be avoided. Instead
-of considering every character over every narrative path, the characters can be written
-to adapt to each path on an individual level, significantly freeing up writer time. This
-is referred to as an emergent narrative, as the story ends up inherently emerging from
-the actions the player and other characters take. Significant progress has been made
-towards being able to represent characters in this manner, but developers still lack a
-unified tool that can support this system.
+One way replayability can be introduced is through \textbf{emergent narratives}. These
+can take many forms, and are frequently a side effect of complex game mechanics. For
+example, in 2005, an unintended interaction within World of Warcraft, a game where
+thousands of players interact within an online multiplayer world, caused a plague
+to spread and started a pandemic. \cite{andrei_weird_2020} None of this behavior was
+written into the game as an intended storyline. Rather, it emerged from the individual
+behaviors of players, creating a sequents of events that would never have existed
+otherwise.
 
-Many tools proposed contain some sort of drama management, which oversees the
+It is also possible to target emergent narratives as a core part of your game.
+By shifting focus away from the story as a whole and onto the characters themselves,
+much of the complexity that comes from branching storylines can, in theory, be avoided. Instead
+of considering every character over every narrative path, the characters can be written
+to create each path on an individual level, significantly freeing up writer time.
+Significant progress has been made towards being able to represent characters in this
+manner, but developers still lack a unified tool that can support this system.
+
+Many tools proposed contain some sort of \textbf{drama management}, which oversees the
 overall tension of the story. For example, if events become too dull, the drama
 manager might insert some sort of unexpected occurence to make the plot engaging
 again. In extreme cases, the drama manager may be in charge of the rising tension,
-climax, and resolution of the plot entirely.
+climax, and resolution of the plot entirely. This can be thought of as an
+all-powerful entity that ensures the narrative stays controlled, to whatever
+extent the developer would like.
 
-\section{Related Work} \label{sec:RelatedWork}
+Emergent narrative is a spectrum in many ways, and development and research exist
+on all parts of it. This project aims to create a system where characters act in
+highly individualized ways, with the player able to step in for anyone and influence
+the story however they'd like. During preliminary research, we went through
+existing projects to determine which features were important for our implementation
+and what we should avoid during development.
+
+\section{Primary Inspirations} \label{sec:PrimaryInspirations}
+
+There are two primary projects that pioneered the technique we are attempting to
+model here: Comme il Faut (2011) and Versu (2012). Both, and subsequent follow-up
+projects, were referred to heavily while designing Praxsmith.
+
+Comme il Faut (2011), also referred to as CiF and used to create Prom Week \cite{noauthor_prom_nodate},
+saw characters following certain predefined social exchanges to create a social simulation,
+referring to the technique as "social physics". \cite{mccoy_comme_2011} This
+implementation was not available to the public, but did provide some vital progress
+in the field. Comme il Faut uses a set of databases to store information about the
+world state and introduces the idea of social exchanges, with required conditions
+determined by predicate logic and a set of effects when a particular branch is chosen.
+It is also able to keep track of past events and refer to them, weighting certain
+actions based on current and past world states. Although powerful, Comme il Faut
+did have some restrictive limitations. For example, social exchanges were limited to
+three characters and provided fairly rigid bounds of operation. It was noted by a
+future work that rumor spreading was made impossible by this restriction, which would
+have been a welcome addition to the simulation. \cite{samuel_ensemble_2015}
+
+Versu (2012) was another private project that attempted to create believable au-
+tonomous characters. It involved a lower-level logic language called Praxis, as well
+as a higher-level writer-friendly language named Prompter. \cite{evans_ai_2015}
+\cite{nelson_prompter_2014} The results from this project seem promising, but are
+largely lost to time. The tree and exclusion language inspired world are powerful,
+but suffer from a lack of structure that could make it more susceptible to bugs.
+Versu also introduces the idea of character-driven goals, rather than weights
+within social exchanges as Comme il Faut was designed. These goals can be used in
+conjunction with a planner, allowing for characters to make informed decisions about
+the actions available to them. Most of the syntax and patterns within this project
+are pulled from Versu's Praxis, including sentence syntax, goals, and relation types.
+
+The first social simulation engine available to the public was the Ensemble Engine,
+created in 2015. \cite{samuel_ensemble_2015} It fixes a number of the flexibility
+issues Comme il Faut had, such as allowing rulesets to take on any number of
+participants and allowing the author to create unique categories of social facts.
+It also provides comprehensive authoring and debugging user interfaces that allow
+authors to wrap their head around complex social simulation mechanics. Designed by
+an experienced Comme il Faut developer, these interfaces provide useful references
+and show that tooling is crucial for authors. Unfortunately, the Ensemble Engine
+project hasn’t received support since 2019.
+
+Praxish was a recent attempt to recreate the Praxis language, but had a gap in
+maintenance during the development of this project after its creation in 2023.
+It largely maintains the same issues that Praxis, while not being as fully featured.
+\cite{dameris_praxish_2023} Inspired by this project, implementing Praxis in a
+modern setting, with additions from other social simulation projects, will be the
+primary focus of this research.
+
+\section{Other Related Work} \label{sec:OtherRelatedWork}
 
 Façade, created in 2003, is often considered one of the earlier attempts at creating an
 emergent narrative. Instead of focusing heavily on the characters themselves, Façade
 organizes its story into beats, which are pulled by a central drama manager. While
 the results are impressive, they are not perfect. Two man years of effort only resulted
 in a 20 minute one-act play replayable 6 or 7 times before it was exhausted. The text
-input was also notoriously finnicky, which was likely more a result of the time it was
-created. \cite{mateas_facade_2003}
+input was also notoriously finnicky, largely a result of the year it was
+created in. \cite{mateas_facade_2003}
 
-Comme il Faut (2011), used to create Prom Week \cite{noauthor_prom_nodate}, saw characters following certain
-predefined rules to create the social simulation. \cite{mccoy_comme_2011} This implementation provided
-some limitations and was somewhat overly structured, and the project wasn’t publicly
-available, leading to the creation of the Ensemble Engine in 2015. \cite{samuel_ensemble_2015} This fixes a
-lot of the flexibility issues Comme il Faut had, but still maintains certain structures
-that quickly become convoluted. It also hasn’t received support since 2019.
-
-Versu (2012) was another private project that attempted to create believable au-
-tonomous characters. It involved a lower-level logic language called Praxis, as well
-as a higher-level writer-friendly language named Prompter. \cite{evans_ai_2015} \cite{nelson_prompter_2014} The results from
-this project seem promising, but are largely lost to time. The tree and exclusion
-language inspired world are powerful, but suffer from a lack of structure that could
-make it more susceptible to bugs. Praxish was a recent attempt to recreate the Praxis
-language, but it hasn’t been maintained since it was created in 2023 and largely main-
-tains the same issues, while not being fully featured. \cite{dameris_praxish_2023} Creating Praxis in a modern
-setting and with sturdier foundations will be the primary focus of this paper.
-
-Some other related works include Crosston Tavern (2021) which aims to let charac-
-ters take independent action according to goals. \cite{oliver_crosston_2021} Ryan et al. (2015) explore a
-system that allows characters to misremember and lie, allowing for even more dra-
-matic moments. \cite{ryan_toward_2015} This is an interesting extension, but is outside the scope of
-this project. Inform 7, created in 2006, is a popular open-source language for writ-
-ing interactive fiction and was a large inspiration for Versu’s higher-level Prompter
+Some other related works include Crosston Tavern (2021) which aims to let characters
+take independent action according to goals. \cite{oliver_crosston_2021} Ryan et al. (2015) explore a
+system that allows characters to misremember and lie, allowing for even more dramatic
+moments. \cite{ryan_toward_2015} This is an interesting extension, but is outside the scope of
+this project. Inform 7, created in 2006, is a popular open-source language for writing
+interactive fiction and was a large inspiration for Versu’s higher-level Prompter
 language. \cite{inform_7_inform_nodate} ”ink”, created in 2015, is another such system, allowing for narrative
 scripting within games using a higher-level writer-friendly language, also supporting
 popular game engine integration. \cite{noauthor_ink_nodate} The Sims is a popular video game series that
 centers around individual non-player-controlled characters, with the first installment
-released in 2000. \cite{arts_sims_2016} Although largely successful, The Sims does not attempt to cre-
-ate an overarching narrative with the characters at the center and is more focused on
+released in 2000. \cite{arts_sims_2016} Although largely successful, The Sims does not attempt to
+create an overarching personal narrative with the characters at the center and is more focused on
 simulation-style gameplay.
