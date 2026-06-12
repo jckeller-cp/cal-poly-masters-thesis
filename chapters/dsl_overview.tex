@@ -3,10 +3,10 @@
 \section{The World Representation} \label{sec:TheWorldRepresentation}
 
 The world refers to the collection of data that defines the state of the characters and
-their relations. It is split into Actors, which are either active contributors to your
-story or passive props\slash rooms, and Relations, which include any sort of data attached
+their relations. It is split into \textbf{Actors}, which are either active contributors to your
+story or passive props\slash rooms, and \textbf{Relations}, which include any sort of data attached
 to or between these actors. One unique type of relation, which is explored more later,
-is Social Practices, which provide the interface through which actors are able to interact
+is \textbf{Social Practices}, which provide the interface through which actors are able to interact
 with each other.
 
 \subsection{Actors}
@@ -37,11 +37,13 @@ is an internal ID that is used to refer to the actor throughout the simulation. 
 modifiers and goals follow this, with goals being contained within brackets.
 
 \begin{lstlisting}[float=hb, caption=Examples of instantiating agents into the world., label=lst:ActorDef]
-actor michelle as "Michelle" {
-  goal (3): any Person where Person.feels.Excited
-  goal (1): delta count Person where Person.feels.Happy
-}
 actor house as "House" hidden
+actor street as "Street" hidden
+
+actor bob as "Bob" {
+  goal (10): delta count Person where Person.feels.happy
+}
+actor alice as "Alice"
 \end{lstlisting}
 
 Any actors considered ``inactive'' will be marked as not being available to perform
@@ -58,21 +60,20 @@ behave correctly. The scores of different actions are available in the interface
 for manual characters, and automatic characters will automatically pick the highest
 scored option (ties broken randomly).
 
-\Cref{lst:ActorDef} features two goals, one predicate and one that tracks a numerical
-value. The goals themselves are written as expressions, which are explored later in
-this paper. The weight appears within parenthesis, so the first goal can be read as
-``Michelle wants any person to be excited with a weight of 3''. It only cares if there
-is any person that satisfies that condition, and if there is, the score for the
-resulting state will be increased by $3$. The second goal can be read as ``score any
-changes to the number of happy people with a weight of 1''. If an action reduces the
-number of happy people by $2$, the resulting score will also be two lower than it
-would be otherwise.
+\Cref{lst:ActorDef} features one goal that tracks a numerical
+value. Goals themselves are written as expressions, which are explored later in
+this paper. The weight appears within parenthesis, so Bob's goal can be read as
+``Bob wants to see the number of happy people increase with a weight of $10$''.
+If this number of happy people changes, Bob's scoring of the resulting state
+will reflect that, proportionally to the number of people in question. If two
+people become happy, the resulting state will be $20$ points greater. If one
+person stops being happy, the resulting state will be $-10$.
 
 \subsection{Relations}
 
 Relations are the primary method of tying actors together in the world. They can
 represent actual human relations, such as “Alice trusts Bob”, but they can also
-represent other concepts, like “Michelle is in the house”.
+represent other concepts, like “Alice is in the house”.
 
 \begin{lstlisting}[float=hb, caption=Example of defining and applying a new relation type., label=lst:RelationDef]
 directional trusts {
@@ -207,12 +208,12 @@ types of the Ensemble Engine \cite{samuel_ensemble_2015}.
 // Defining traits
 trait curious
 // Applying / querying traits
-michelle.is.curious
+bob.is.curious
 
 // Defining emotions
 emotion happy
 // Applying / querying emotions
-michelle.feels.happy
+alice.feels.happy
 
 // Defining directionals
 directional trusts
@@ -248,8 +249,8 @@ present this way, in which one character feels a certain way about another, but 
 feeling is not necessarily mutual.
 
 By adding exclusive to the type definition, the engine will ensure that the primary actor
-(in the case of \Cref{lst:RelationTypeExamples}, Alice or Michelle) only has one outgoing
-relation of this type at any given time. For example, Michelle can only be in one
+(in the case of \Cref{lst:RelationTypeExamples}, Alice) only has one outgoing
+relation of this type at any given time. For example, Alice can only be in one
 place at a time, so it doesn't make sense for her to have more than one $is\_in$ relation.
 If a new relation is created that conflicts, it will automatically remove the old one.
 This is very useful for switching the state of a character between mutually exclusive states,
@@ -293,13 +294,13 @@ practice greet (Greeter, Greeted) {
 }
 
 // must also be instantiated on the world side:
-practice.greet.jacob.alaina { exclamation: "Hey [Greeted]!" }
+practice.greet.bob.alice { exclamation: "Hey [Greeted]!" }
 \end{lstlisting}
 
 All practices have participants. In \Cref{lst:ExamplePractice}, there are two: $Greeter$
 and $Greeted$, and each will play a unique role in the practice. This behavior is
 common across all practices. These parameters ($Greeter$ and $Greeted$) will then become
-bound to $jacob$ and $alaina$ respectively for any expressions or strings within that
+bound to $bob$ and $alice$ respectively for any expressions or strings within that
 particular instance, as can be seen throughout the example, where $Greeter$ and
 $Greeted$ are treated as regular actors in the expression despite not being defined
 in the world. The example also specifies an $exclamation$ field, which
@@ -393,12 +394,12 @@ There are five types a field can be:
 \section{Simple Example} \label{sec:SimpleExample}
 
 \Cref{lst:SimpleExampleTypes} and \Cref{lst:SimpleExampleWorld} are meant to showcase a few core parts of the language in
-a condensed manner. It includes two characters, Jacob and Alaina. Jacob wants to make
-people happy, but can only do so by greeting Alaina, which he can only do if they are
-in the same place. Alaina starts off feeling sad and is on the street, while Jacob is
-in the house. To end the simulation, Alaina must first move to the house (which is
-permitted via the $practice.move.alaina.street.house$ declaration that puts her in that
-practice at initialization), and then Jacob can greet her to make her happy, which
+a condensed manner. It includes two characters, Bob and Alice. Bob wants to make
+people happy, but can only do so by greeting Alice, which he can only do if they are
+in the same place. Alice starts off feeling sad and is on the street, while Bob is
+in the house. To end the simulation, Alice must first move to the house (which is
+permitted via the $practice.move.alice.street.house$ declaration that puts her in that
+practice at initialization), and then Bob can greet her to make her happy, which
 satisfies one of his goals.
 
 \begin{lstlisting}[float=hb, caption=Type definitions for the simple example., label=lst:SimpleExampleTypes]
@@ -448,20 +449,20 @@ practice move (Actor, From, To) {
 actor house as "House" hidden
 actor street as "Street" hidden
 
-actor jacob as "Jacob" {
+actor bob as "Bob" {
   goal (10): delta count Person where Person.feels.happy
 }
-actor alaina as "Alaina"
+actor alice as "Alice"
 
-jacob.is_in.house
-alaina.is_in.street
+bob.is_in.house
+alice.is_in.street
 
-alaina.feels.sad
+alice.feels.sad
 
-practice.greet.jacob.alaina {
+practice.greet.bob.alice {
   exclamation: "Hey [Greeted]! Welcome home!"
 }
-practice.move.alaina.street.house
+practice.move.alice.street.house
 \end{lstlisting}
 
 \section{The User Interface} \label{sec:TheUserInterface}

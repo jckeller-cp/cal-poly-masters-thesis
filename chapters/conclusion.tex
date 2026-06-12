@@ -1,18 +1,21 @@
 \chapter{Conclusion} \label{sec:Conclusion}
 
-Praxsmith pulled inspiration from many emergent narrative projects, but primarily
-Praxis, which laid the scaffolding for the relation types, agent goals, and general
-syntax. Design elements from other research listed in \Cref{sec:BackgroundAndLiteratureReview} were
-also used. The result was a domain-specific language which, although flawed in
-some ways, showed that a powerful system could be created by combining these
-components in a more modern setting.
+\section{Contributions} \label{sec:Contributions}
 
-Both the study participants and the authors were able to achieve satisfactory results
-with this system, and many users reported that they felt as though the system was
-capable of more than what they were able to explore in the allotted time. However,
-survey bias and response analysis leads us to believe that the development
-experience could be greatly improved with tweaks to the language and underlying
-system.
+This paper provides an overview of what technologies and principles outline
+a successful character-narrative DSL. It also creates a new framework, Praxsmith, that
+aims to realize these concepts in a modern setting, including:
+
+\begin{itemize}
+    \item A flexible game engine built on top of a Rust backend and a web app frontend.
+    \item An actor-centric DSL inspired by Praxis, as well as many other influences
+    outlined in \Cref{sec:BackgroundAndLiteratureReview}.
+    \item Modern tooling, such as build-time type-checking to prevent runtime errors
+    and minimize logic bugs.
+    \item An authoring environment built into the web app.
+    \item An evaluation of usability and capability, comprising of author evaluation
+    plus a limited user study.
+\end{itemize}
 
 \section{Research Question Answers} \label{sec:ResearchQuestionAnswers}
 
@@ -54,6 +57,17 @@ Although Praxsmith lacked some crucial features, its fundamental construction pr
 that it is possible to modernize these concepts. This includes features like the concretely defined
 yet flexible relation types and the strict type checker, plus the layered nature of the
 project itself, allowing for integration with other engines.
+
+\textbf{Is a logic-level DSL like Praxis usable for creating convincing
+emergent narrative simulations?}
+
+Through our experimentation and the user study, it appears that although Praxsmith is
+technically capable of complex simulation, it lacks the convenience required by these
+scenarios. Authoring quickly becomes hard to manage with even smaller scenarios, so
+in situations where there are thousands of relations governing the state of the world,
+it would likely become unreasonable to work with. As Comme il Faut and Versu both have
+more authorable counterparts, it appears as though a higher level layer would be required
+for Praxsmith to be a truly applicable system.
 
 \section{Limitations} \label{sec:Limitations}
 
