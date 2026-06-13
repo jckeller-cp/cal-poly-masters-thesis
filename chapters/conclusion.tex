@@ -13,7 +13,9 @@ aims to realize these concepts in a modern setting, including:
     \item Modern tooling, such as build-time type-checking to prevent runtime errors
     and minimize logic bugs.
     \item An authoring environment built into the web app.
-    \item An evaluation of usability and capability, comprising of author evaluation
+    \item Thorough documentation about the features and design decisions of the
+    language.
+    \item An evaluation of usability and capability, comprising of an author evaluation
     plus a limited user study.
 \end{itemize}
 
@@ -30,8 +32,8 @@ successful character-focused narrative DSL.
     through. Both Comme il Faut and Versu tackle this problem
     in unique ways with great success from an authoring standpoint.
     \item \textbf{Catching Errors:} Praxsmith has strong typing systems, which
-    noticeably catches many mistakes whilst developing a game. The Ensemble Engine
-    addresses this by having a debugger that was designed by one of the authors
+    noticeably catch many mistakes whilst developing a game. The Ensemble Engine
+    addresses this by having a debugger that was designed by a core developer
     after noticing a strong need for it.
     \item \textbf{Moderate Flexibility:} Comme il Faut, as noted by the Ensemble
     Engine authors, ended up being overly restrictive in the social simulation
@@ -41,11 +43,12 @@ successful character-focused narrative DSL.
     takes are.
 \end{itemize}
 
-\textbf{Is a structured relationship graph a useful way to model world state for
+\textbf{Is a structured relationship graph a useful way to model the world state for
 writing autonomous characters?}
 
-Yes. Both Comme il Faut and Versu model their worlds in a similar way, although
-not explicitly. Through usage of Praxsmith, it became clear to both the survey
+Initial evidence indicates that this way of modeling the world is effective.
+Both Comme il Faut and Versu model their worlds in a similar way, although
+not explicitly. Through the usage of Praxsmith, it became clear to both the survey
 participants that considering the social space as a network of
 relations between agents is an intuitive way to consider the world and opens up
 the door to powerful possibilities.
@@ -66,7 +69,7 @@ technically capable of complex simulation, it lacks the convenience required by 
 scenarios. Authoring quickly becomes hard to manage with even smaller scenarios, so
 in situations where there are thousands of relations governing the state of the world,
 it would likely become unreasonable to work with. As Comme il Faut and Versu both have
-more authorable counterparts, it appears as though a higher level layer would be required
+more authorable counterparts, it appears as though a higher-level layer would be required
 for Praxsmith to be a truly applicable system.
 
 \section{Limitations} \label{sec:Limitations}
@@ -80,19 +83,19 @@ a target of 3 to 6 hours.
 
 With an involved project such as a development environment\slash game engine, it
 is difficult to find active participants willing to put in the time necessary to
-become familiar with a new technology. Further research could offer incentive,
-for example monetary, to drive longer participation times. Alternatively, a larger
-scale game project could be developed alongside the engine, which would allow for
+become familiar with a new technology. Further research could offer an incentive,
+such as monetary rewards, to drive longer participation times. Alternatively, a
+larger-scale game project could be developed alongside the engine, which would allow for
 direct feedback from the authors most involved in the process. Larger projects
 like Comme il Faut \cite{mccoy_social_2014} and Versu \cite{nelson_prompter_2014} were
 also developed this way, with ``Prom Week'' and ``Blood and Laurels'' being
-the associated game projects respectively.
+the associated game projects, respectively.
 
 \subsection{Survey Bias} \label{sec:SurveyBias}
 
 This survey came with a significant amount of selection bias, as all respondents
 to the preliminary survey had high experience with programming languages,
-likely due to the areas this project was advertised. An important part of
+likely due to the areas in which this project was advertised. An important part of
 this project was how easy the system is to use for writers, which ended up not
 being determinable from the selection of survey participants. For future research,
 more trials should be run specifically with writers who are not familiar
@@ -105,9 +108,9 @@ who would be using the tool were not evaluated.
 
 \subsection{Personal Bias} \label{sec:PersonalBias}
 
-As multiple of the trial participants were acquainted with one of the authors to varying
+As multiple of the trial participants were acquainted with us to varying
 degrees, there is personal bias embedded within the results as well. Casual channels
-of communciation (Discord messages) were used during the experimentation stage for
+of communication (Discord messages) were used during the experimentation stage for
 questions and feedback about the systems. Although all participants completed the
 surveys as intended, this personal bias cannot be overlooked and should be addressed
 in future research by conducting a more repeatable experiment.
@@ -117,7 +120,7 @@ in future research by conducting a more repeatable experiment.
 \subsection{Improved Studies} \label{sec:ImprovedStudies}
 
 To address the survey limitations enumerated in \Cref{sec:Limitations}, more thoroughly
-conducted studies could be used. By offering incentive to participants, broadening the
+conducted studies could be used. By offering an incentive to participants, broadening the
 pool of outreach, and allowing for more time to experiment, survey results would cover
 a much more accurate representation of the intended audience.
 
@@ -138,7 +141,7 @@ Perhaps the foremost technical opportunity for future research is expanding upon
 authorability of Praxsmith by adding either:
 
 \begin{itemize}
-    \item A higher level language that writes like a play script, something
+    \item A higher-level language that writes like a play script, something
     authors are likely familiar with. This is what Prompter does for the Versu engine.
     \cite{nelson_prompter_2014} This would likely give much better results for a
     survey of writers working with this project, and it would still give developers

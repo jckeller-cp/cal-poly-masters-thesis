@@ -6,7 +6,7 @@ The world refers to the collection of data that defines the state of the charact
 their relations. It is split into \textbf{Actors}, which are either active contributors to your
 story or passive props\slash rooms, and \textbf{Relations}, which include any sort of data attached
 to or between these actors. One unique type of relation, which is explored more later,
-is \textbf{Social Practices}, which provide the interface through which actors are able to interact
+is \textbf{Social Practices}, which provide the interface through which actors can interact
 with each other.
 
 \subsection{Actors}
@@ -16,14 +16,14 @@ Actors can take the shape of any entity within the world:
 \begin{itemize}
     \item \textbf{Characters within the story:} Any character that acts autonomously and has
     individual desires or goals. This is the primary use of actors, and in a simple
-    social scenario it may be all you need.
+    social scenario, it may be all you need.
     \item \textbf{Static objects in the world:} For example, a house that characters can enter and
     exit, or a bottle that can be passed around. The simple example that comes pre-loaded
     in the playground and shown below uses this approach.
     \item \textbf{Games or other systems within the world:} Theoretically, one could even represent
     a dynamic chess board within the world as an actor with certain relation states inside
     of it. Or it could be a simpler case, like a jukebox that can play from a set number of
-    songs. This language is by design very powerful; it is ease of use that is being evaluated.
+    songs.
     \item \textbf{Drama managers or other meta-entities:} One could introduce an all-powerful deistic
     entity that is able to create drama within character relations when things get too stale.
     This is commonly implemented within similarly structured projects as a “drama manager”,
@@ -46,8 +46,8 @@ actor bob as "Bob" {
 actor alice as "Alice"
 \end{lstlisting}
 
-Any actors considered ``inactive'' will be marked as not being available to perform
-actions. This is useful, for example, if a character becomes unconscious, but you still
+Any actors considered ``inactive'' will not be able to perform actions they may have.
+This is useful, for example, if a character becomes unconscious, but you still
 want them to be displayed and other characters can still observe them. Actors marked
 as ``hidden'' will still be able to perform actions (unless also marked as ``inactive''),
 but will not be shown to the user. A drama manager might use this modifier to run its
@@ -57,14 +57,14 @@ Actors can have goals that will influence their decision-making. Praxsmith uses 
 planning system to determine which action an actor should take in order to maximize
 the achievement of their goals, so goal definition is crucial in getting them to
 behave correctly. The scores of different actions are available in the interface
-for manual characters, and automatic characters will automatically pick the highest
-scored option (ties broken randomly).
+for manual characters, and automatic characters will automatically pick the highest-scoring
+option (ties broken randomly).
 
 \Cref{lst:ActorDef} features one goal that tracks a numerical
 value. Goals themselves are written as expressions, which are explored later in
-this paper. The weight appears within parenthesis, so Bob's goal can be read as
+this paper. The weight appears within parentheses, so Bob's goal can be read as
 ``Bob wants to see the number of happy people increase with a weight of $10$''.
-If this number of happy people changes, Bob's scoring of the resulting state
+If the number of happy people changes, Bob's scoring of the resulting state
 will reflect that, proportionally to the number of people in question. If two
 people become happy, the resulting state will be $20$ points greater. If one
 person stops being happy, the resulting state will be $-10$.
@@ -89,9 +89,9 @@ Definitions vary from type to type, but generally take the form of \Cref{lst:Rel
 By following certain naming conventions, relations can be specified in a similar manner
 to the English language. This example defines a non-mutual relation that allows for one actor to
 trust another, and also gives it a ``level'' field that can range from 0 to 10. It then applies
-the relation to Alice and Bob, stating that that Alice trusts Bob with a level of 7 out of 10.
+the relation to Alice and Bob, stating that Alice trusts Bob with a level of 7 out of 10.
 
-One special kind of relation to note are practices, which represent social practices that actors
+One special kind of relation to note is practices, which represent social practices that actors
 can engage in and have more rigid structures. They are the mechanism that gives characters the
 ability to act and influence the world. More information about them is below.
 
@@ -109,9 +109,9 @@ alice.trusts.bob.level
 
 The first sentence acts as an existence check, returning true if the ``Alice trusts Bob''
 relation exists at all. The second sentence takes that a step further, asking to what
-level that trust exists in what is referred to as a ``fielded query''. Fielded queries
+level that trust exists in what Praxsmith refers to as a ``fielded query''. Fielded queries
 on relations that do not exist will throw an error, so it is important to first guard
-against this case or the type checker will not allow the world to build.
+against this case, or the type checker will not allow the world to build.
 
 \subsection{Expressions}
 
@@ -149,7 +149,7 @@ within expressions.
     that returns a number.
     \item The $for all\ \_$ operator evaluates to true if and only if every actor, bound
     to the free variable, passes the condition. Care must be taken with this operator, as
-    every actor also means the actor performing the action as well as static actors that
+    every actor also means the actor performing the action, as well as static actors that
     would not count as characters, which must be filtered out if necessary.
     \item The $any\ \_\ where$ operator evaluates to true if any actor, bound to the free
     variable, passes the condition.
@@ -158,7 +158,7 @@ within expressions.
     methods of moving from the boolean space to the number space, and allows for
     goals to more accurately track large numbers of actors.
     \item The $sum$, $average$, $min$, and $max$ operators represent aggregators that
-    work similarly to the ``count'' operator, except instead of simply counting the number
+    work similarly to the ``count'' operator, except that instead of simply counting the number
     of actors that pass a condition, a certain value from those actors is accumulated
     according to the specified method. Degenerate cases default to $0$.
 \end{itemize}
@@ -167,7 +167,8 @@ within expressions.
 
 When the world is built, all relevant statements are passed through the engine's type
 checker to ensure conformity. This moves errors from runtime into build time, which is
-crucial for a system with so many moving parts and possible outcomes.
+crucial for a system with so many moving parts and possible outcomes. Dealing with errors
+before they become hidden away in branches boosts productivity significantly.
 
 \begin{lstlisting}[float=hb, caption=Examples describing how to appease the type checker., label=lst:TypeChecking]
 // "cannot access field level of Other.trusts.Person without guarantee that it exists"
@@ -181,7 +182,7 @@ not Other.trusts.Person or Other.trusts.Person.level < 5
 \Cref{lst:TypeChecking} shows a couple of examples of expressions that either pass
 or fail the type checking pass. Assuming that the $level$ field is in fact a number,
 it may seem counterintuitive that the first expression fails. This is because it may
-an error if the relation does not exist, which is a potential major pitfall,
+be an error if the relation does not exist, which is a potential major pitfall,
 especially when using the operators that iterate over large numbers of actors.
 
 The other compiling examples both make use of the short-circuit guarantees of the $and$
@@ -200,7 +201,7 @@ to keep track of when first using the language.
 \section{Relation Types} \label{sec:RelationTypes}
 
 Relations in Praxsmith come in many different types, and each behaves very differently
-from the others. They are mainly derived from the emergent types the authors of Praxis
+from the others. They are mainly derived from the emergent types that the authors of Praxis
 noticed \cite{evans_ai_2015}, and many of the names are derived from the social fact
 types of the Ensemble Engine \cite{samuel_ensemble_2015}.
 
@@ -234,7 +235,7 @@ actor, which is the actor expressing that trait. An actor can have many traits,
 and they can be added or removed at any time. As seen in \Cref{lst:RelationTypeExamples},
 they can be accessed using the $is$ keyword.
 
-\textbf{Emotions} define a short-lived feeling an actor can have. Similarly to traits, they
+\textbf{Emotions} define a short-lived feeling that an actor can have. Similarly to traits, they
 only ever have one connected actor, which is the actor expressing that emotion.
 Unlike traits, an actor can only ever have one emotion at a time. If long-term effects
 are desired, this is not the relation type to use. Emotions are intended as a quick
@@ -248,13 +249,13 @@ trusts Bob, but that does not necessarily mean that Bob trusts Alice. Most relat
 present this way, in which one character feels a certain way about another, but that
 feeling is not necessarily mutual.
 
-By adding exclusive to the type definition, the engine will ensure that the primary actor
+By adding ``exclusive'' to the type definition, the engine will ensure that the primary actor
 (in the case of \Cref{lst:RelationTypeExamples}, Alice) only has one outgoing
 relation of this type at any given time. For example, Alice can only be in one
 place at a time, so it doesn't make sense for her to have more than one $is\_in$ relation.
 If a new relation is created that conflicts, it will automatically remove the old one.
 This is very useful for switching the state of a character between mutually exclusive states,
-such as them moving from one room to another. Without this, one would have to manually
+such as moving from one room to another. Without this, one would have to manually
 remove their old location relation every time they moved, which would get very
 tedious and is prone to error.
 
@@ -262,11 +263,11 @@ Sometimes, relationships are inherently mutual. For example, if Alice is married
 then Bob is married to Alice. \textbf{Reciprocal} relations are designed for this case, and the
 engine will ensure that if and only if one edge exists, the other does as well. Any
 fields attached to a reciprocal relation are shared between the two edges, as emphasized
-on the last couple lines of \Cref{lst:RelationTypeExamples}.
+in the last couple of lines of \Cref{lst:RelationTypeExamples}.
 
 \subsection{Practices}
 
-Practices are a special type of relationship that give your characters to perform actions.
+Practices are a special type of relationship that give your characters the ability to perform actions.
 
 \begin{lstlisting}[float=hb, caption=A simple example practice allowing for two characters to greet each other., label=lst:ExamplePractice]
 emotion happy
@@ -297,7 +298,7 @@ practice greet (Greeter, Greeted) {
 practice.greet.bob.alice { exclamation: "Hey [Greeted]!" }
 \end{lstlisting}
 
-All practices have participants. In \Cref{lst:ExamplePractice}, there are two: $Greeter$
+All practices have participants, which can be any actor. In \Cref{lst:ExamplePractice}, there are two: $Greeter$
 and $Greeted$, and each will play a unique role in the practice. This behavior is
 common across all practices. These parameters ($Greeter$ and $Greeted$) will then become
 bound to $bob$ and $alice$ respectively for any expressions or strings within that
@@ -324,7 +325,7 @@ There are four total mandatory fields in actions:
     only be made available to one participant, so if you want another similar action,
     it must be written explicitly with the participants flipped. This could be seen
     as a limitation, but it also helps ensure that actor-dependent outcomes don't get
-    mixed up in a single action and is rarely an issue in practice.
+    mixed up in a single action, and is rarely an issue in practice.
     \item The $name$ field represents the display name of the action, as it will
     appear to the player. The display names of parameters can be inserted here by
     putting them in square brackets, as shown in the example.
@@ -338,11 +339,12 @@ There are four total mandatory fields in actions:
 \Cref{lst:ExamplePractice} only has one action listed, but practices may have as many as
 they would like, and they often do in more complex scenarios.
 
-Refered to internally as effects, these are the possible outcomes an action can have:
+Refered to internally as effects, as named in Comme il Faut \cite{mccoy_comme_2011},
+these are the possible outcomes an action can have:
 
 \begin{itemize}
     \item The $broadcast$ and $say$ effects allow for text to be printed to the screen.
-    If the text is broadcasted, it will appear as system text, otherwise it will appear
+    If the text is broadcast, it will appear as system text; otherwise it will appear
     as though the character themselves is saying the line. The line can be any expression
     that evaluates to a string, which allows for fairly expressive speech, as explored
     in \Cref{lst:ExamplePractice}.
@@ -353,14 +355,15 @@ Refered to internally as effects, these are the possible outcomes an action can 
     on the frontend. This may be used to reveal the existence of a previously unknown
     character.
     \item The $delete$ effect removes a relation from the world. Actors cannot be deleted.
-    This is commonly used as $delete self$ to remove practices after they have served
+    This is commonly used as $delete\ self$ to remove practices after they have served
     their course.
     \item The $create$ effect instantiates a new relation into the world. If an identical
     relation already exists, it will be replaced with this new one. This is how relations
     create other relations, which is an important mechanism in keeping the world running.
     For example, if an argue practice escalates to a high degree, an action may become
-    available for one of the participants that allows for them to initiate a divorce
-    practice if they are married.
+    available for one of the participants that allows them to initiate a divorce
+    practice if they are married. Only relations can be created here; actors are initialized
+    once on world build to minimize invalid references later on.
     \item The $set$ effect sets a single field of a relation to a new value, which can be
     any expression, as long as it resolves to something within the target field type.
     \item The $increase$ and $cycle$ effects are both used to increase or decrease the
@@ -371,7 +374,7 @@ Refered to internally as effects, these are the possible outcomes an action can 
 
 \subsection{Field Types}
 
-There are five types a field can be:
+There are five types of fields:
 
 \begin{itemize}
     \item Numeric ranges: A field can be defined as a numeric range, such as $0..10$.
@@ -381,9 +384,9 @@ There are five types a field can be:
     such as $calm\ \text{\textbar}\ tense\ \text{\textbar}\ furious$. This means that the field can only take on one
     of those three values. This kind of value is often referred to as an enum in other
     languages. When assigning to or accessing this field, to avoid collisions with
-    sentences, the language requires you prefix the value with a $\#$.
+    sentences, the language requires you to prefix the value with a $\#$.
     \item Actor References: A field can reference an actor in the world, and will
-    be type checked upon world load to make sure the actor exists or the binding is
+    be type-checked upon world load to make sure the actor exists or the binding is
     valid. When assigning to or accessing this field, to avoid collisions with
     sentences, the language requires you to prefix the value with a $@$.
     \item String: A field can be a string, which can take on any value. When assigning
@@ -493,8 +496,8 @@ to the interactive part of the project can be found in \Cref{fig:Webpage1} and \
     \label{fig:Webpage2}
 \end{figure}
 
-There was also significant effort put into the documentation, which is linked on the
-main page. This comprises of detailed explanations of all that is discussed in this
+There was also a significant effort put into the documentation, which is linked on the
+main page. This includes detailed explanations of all that is discussed in this
 chapter of this research paper, as well as more examples to help new users get started.
 
 As long as it remains online, the web interface for this project can be found at

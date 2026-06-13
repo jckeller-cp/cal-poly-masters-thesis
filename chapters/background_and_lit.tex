@@ -2,20 +2,20 @@
 
 \section{Background} \label{sec:Background}
 
-Many stories within video games are experienced in a linear fashion, with the player
+Many stories within video games are experienced linearly, with the player
 having very little autonomy over how the setting progresses. Some games offer you
 set choices throughout the playthrough and\slash or multiple endings, but still ultimately
 offer a limited set of experiences. Many players value the replayability of a game,
-referring to how much the game can be replayed and exlored before becoming stale,
+referring to how much the game can be replayed and explored before becoming stale,
 which is known to be difficult to combine with a strong narrative experience.
 
 One way replayability can be introduced is through \textbf{emergent narratives}. These
-can take many forms, and are frequently a side effect of complex game mechanics. For
+can take many forms and are frequently a side effect of complex game mechanics. For
 example, in 2005, an unintended interaction within World of Warcraft, a game where
 thousands of players interact within an online multiplayer world, caused a plague
 to spread and started a pandemic. \cite{andrei_weird_2020} None of this behavior was
 written into the game as an intended storyline. Rather, it emerged from the individual
-behaviors of players, creating a sequents of events that would never have existed
+behaviors of players, creating a sequence of events that would never have existed
 otherwise.
 
 It is also possible to target emergent narratives as a core part of your game.
@@ -28,7 +28,7 @@ manner, but developers still lack a unified tool that can support this system.
 
 Many tools proposed contain some sort of \textbf{drama management}, which oversees the
 overall tension of the story. For example, if events become too dull, the drama
-manager might insert some sort of unexpected occurence to make the plot engaging
+manager might insert some sort of unexpected occurrence to make the plot engaging
 again. In extreme cases, the drama manager may be in charge of the rising tension,
 climax, and resolution of the plot entirely. This can be thought of as an
 all-powerful entity that ensures the narrative stays controlled, to whatever
@@ -50,7 +50,7 @@ projects, were referred to heavily while designing Praxsmith.
 Comme il Faut (2011), also referred to as CiF and used to create Prom Week \cite{noauthor_prom_nodate},
 saw characters following certain predefined social exchanges to create a social simulation,
 referring to the technique as "social physics". \cite{mccoy_comme_2011} This
-implementation was not available to the public, but did provide some vital progress
+implementation was not available to the public, but it did provide some vital progress
 in the field. Comme il Faut uses a set of databases to store information about the
 world state and introduces the idea of social exchanges, with required conditions
 determined by predicate logic and a set of effects when a particular branch is chosen.
@@ -65,13 +65,15 @@ Versu (2012) was another private project that attempted to create believable au-
 tonomous characters. It involved a lower-level logic language called Praxis, as well
 as a higher-level writer-friendly language named Prompter. \cite{evans_ai_2015}
 \cite{nelson_prompter_2014} The results from this project seem promising, but are
-largely lost to time. The tree and exclusion language inspired world are powerful,
-but suffer from a lack of structure that could make it more susceptible to bugs.
+largely lost to time. The tree and exclusion logic inspired world are powerful,
+but they suffer from a lack of structure that could make it more susceptible to bugs.
 Versu also introduces the idea of character-driven goals, rather than weights
-within social exchanges as Comme il Faut was designed. These goals can be used in
+within social exchanges, as Comme il Faut was designed. These goals can be used in
 conjunction with a planner, allowing for characters to make informed decisions about
-the actions available to them. Most of the syntax and patterns within this project
-are pulled from Versu's Praxis, including sentence syntax, goals, and relation types.
+the actions available to them. This is accomplished through a transactional world state that can
+be rolled back after an action is evaluated, allowing characters to ``see into the future.''
+Most of the syntax and patterns within this project are pulled from Versu's Praxis,
+including sentence syntax, goals, and relation types.
 
 The first social simulation engine available to the public was the Ensemble Engine,
 created in 2015. \cite{samuel_ensemble_2015} It fixes a number of the flexibility
@@ -95,15 +97,15 @@ primary focus of this research.
 Façade, created in 2003, is often considered one of the earlier attempts at creating an
 emergent narrative. Instead of focusing heavily on the characters themselves, Façade
 organizes its story into beats, which are pulled by a central drama manager. While
-the results are impressive, they are not perfect. Two man years of effort only resulted
-in a 20 minute one-act play replayable 6 or 7 times before it was exhausted. The text
-input was also notoriously finnicky, largely a result of the year it was
-created in. \cite{mateas_facade_2003}
+the results are impressive, they are not perfect. Two man-years of effort only resulted
+in a 20-minute one-act play replayable 6 or 7 times before it was exhausted. The text
+input was also notoriously finicky, largely a result of the year it was
+created. \cite{mateas_facade_2003}
 
 Some other related works include Crosston Tavern (2021) which aims to let characters
 take independent action according to goals. \cite{oliver_crosston_2021} Ryan et al. (2015) explore a
 system that allows characters to misremember and lie, allowing for even more dramatic
-moments. \cite{ryan_toward_2015} This is an interesting extension, but is outside the scope of
+moments. \cite{ryan_toward_2015} This is an interesting extension, but it is outside the scope of
 this project. Inform 7, created in 2006, is a popular open-source language for writing
 interactive fiction and was a large inspiration for Versu’s higher-level Prompter
 language. \cite{inform_7_inform_nodate} ”ink”, created in 2015, is another such system, allowing for narrative

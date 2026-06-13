@@ -6,9 +6,10 @@ To evaluate the usability of the Praxsmith project, two methods were used:
     \item We used the tool from the perspective of developers who were already familiar
     with the syntax, technologies, and surrounding literature.
     \item A trial was conducted with other individuals, involving a set of surveys
-    and experimentation with the language and engine taking place in-between. This
+    and experimentation with the language and engine taking place in between. This
     survey was flawed in multiple ways, despite providing useful feedback, as detailed
-    in \Cref{sec:Limitations}.
+    in \Cref{sec:Limitations}. It should be treated more as exploratory evidence
+    from simple case studies.
 \end{itemize}
 
 \section{Research Protocol} \label{sec:ResearchProtocol}
@@ -19,7 +20,7 @@ All materials used during the recruitment and survey process can be found in
 First, a recruitment post was distributed to a few select places:
 
 \begin{itemize}
-    \item The friends of one of the authors.
+    \item Friends of the authors.
     \item The Cal Poly Game Development Club Discord server.
     \item The Cal Poly Gender Inclusive Gaming Club Discord server.
 \end{itemize}
@@ -32,8 +33,8 @@ project itself. Participants were asked to spend as much time as they felt
 comfortable developing, which ended up averaging around 1 hour.
 
 Finally, participants were asked to complete a post-experience survey detailing
-their experience with the project. This included Likert-scale questions, multiple
-choice questions, and text-entry questions. Four individuals completed this final step,
+their experience with the project. This included Likert-scale questions, multiple-choice
+questions, and text-entry questions. Four individuals completed this final step,
 providing real-world information about how a newcomer might approach a tool like this.
 
 All survey materials and procedures were approved by the Cal Poly San Luis Obispo IRB
@@ -47,7 +48,7 @@ it if given the time to explore. One mentioned that the modularity of the practi
 system gave them many options for setting up their scenarios and dropping characters
 into different situations.
 
-As many critiques as there were, there appeared to be minimal concerns about the
+There were minimal concerns within evaluations about the
 core concepts explored with Praxsmith. All participants were satisfied with their
 resulting product after experimentation. The challenge then becomes adjusting how
 they interact with those inner systems so that they can convey their ideas more
@@ -61,10 +62,10 @@ in building a documentation page for the language, including tips on how to use 
 and three short examples showcasing different features and potentials.
 
 All participants had positive reviews about the documentation and examples, with
-2\slash 4 participants rating the usefulness of the documentation at full score on the
-likert scale and 3\slash 4 participants giving a full score to the provided examples.
+2\slash 4 participants rating the usefulness of the documentation at full score (5/5) on the
+Likert scale and 3\slash 4 participants giving a full score (5/5) to the provided examples.
 One user pointed out in one of their responses that a question they had showed up
-in one of the examples, allowing them to quickly move forward with their project.
+in one of the examples, allowing them to move forward with their project quickly.
 
 As a contrary point, one user expressed confusion about the purpose of the
 $delete\ self$ outcome found in many of the example practices, which is a clarity
@@ -79,20 +80,22 @@ they expressed the desire for array type support within the language. This would
 for more complex interaction, like characters holding several items at once or
 remembering a series of actors for later actions.
 
-It is worth noting that arrays are very distinct datatypes and would alter the shape
-of the language significantly. It was for this reason that they were not included, and
+It is worth noting that arrays are distinct datatypes and would alter the shape
+of the language. It was for this reason that they were not included, and
 situations such as actors holding many things can instead be represented by an
-exclusive $is\_held\_by$ relation and by adding dummy objects into the world.
+exclusive $is\_held\_by$ relation, paired with adding dummy objects into the world.
+That way, objects can only be held by one individual, allowing for possession to
+be represented in a more lifelike manner.
 
 However, this complaint highlights a shortcoming of the language either way. Either
 the existing solution needs to be made more obvious and easier to work with, or
-arrays should be added into the system as a way to support this functionality.
+arrays should be added to the system as a way to support this functionality.
 Inventory systems are incredibly common in games, so more research into this area
 would be appropriate.
 
 \section{If-Statements In Effects} \label{sec:IfStatementsInEffects}
 
-One user noted the lack of a proper system around comparisons within the language.
+One user noted the lack of a dedicated system for comparisons within the language.
 Praxsmith provides if-statements for boolean values in the form of $and$ short
 circuiting and can be extended to if\slash else by adding $or$ and $not$ statements, but
 there are two main problems with this:
@@ -100,12 +103,12 @@ there are two main problems with this:
 \begin{itemize}
     \item It is clunky. Especially once you get into if\slash else territory, the long
     expressions quickly become unreadable.
-    \item It only works when returning boolean values, which is okay for conditions
+    \item It only works when returning boolean values, which is okay for conditions,
     but outcomes\slash effects suffer as a result. Changing dialog slightly based on some
     state variable is one example of where this might be useful, as that currently
-    requires one actions within a practice for each dialog choice, which gets
-    repetitive quickly. One survey participant pointed out this repetition in particular
-    as a point of inconvenience.
+    requires one action within a practice for each dialog choice, which gets
+    repetitive quickly. In their post-experience survey, one survey participant pointed
+    out this repetition in particular as a point of inconvenience.
 \end{itemize}
 
 This is likely the first target for language design change, as it would improve quality
@@ -126,11 +129,11 @@ possibility.
 
 \section{User Interface} \label{sec:UserInterface}
 
-Only two users mentioned minor complaints with the user interface of the project.
+Only two users reported minor complaints about the user interface of the project.
 One was to do with the visual highlighting being unclear, and another expressed that
 they would like to be able to see the scripts as they are playing the game for
-reference. Given the minimal nature of these complaints, it is reasonable to assume
-that the development environment did not significantly impact user experience with the language.
+reference. Given the minimal nature of these complaints, it can be concluded that
+the development environment did not significantly impact user experience with the language.
 
 \section{Verbosity} \label{sec:Verbosity}
 
@@ -151,7 +154,7 @@ The language ended up being fairly verbose, which made line counts skyrocket in 
 simple scenarios. \Cref{lst:DoNothingPractice} describes the simplest possible practice,
 one that does nothing, and it still takes up 10 lines with legible bracket practices,
 plus 4 levels of indentation. Adding conditions and outcomes, some of which take up
-multiple lines plus more indentation on their own. Before more features are added,
+multiple lines, plus more indentation on their own. Before more features are added,
 it seems more ideal to cut down on what is already there to make it more legible and
 easier to understand, and the project would benefit from more thought in this
 department.
@@ -159,7 +162,7 @@ department.
 One potential solution is to implement an authoring interface, similar to that found
 in the Ensemble Engine. \cite{samuel_ensemble_2015} They note that a previous Comme il
 Faut developer was able to alleviate many authoring struggles by creating a dedicated
-interface to building out the world. With collapsible practices and quick overviews of
+interface for building out the world. With collapsible practices and quick overviews of
 different relations, a user interface for authoring is likely a significant improvement
 over raw code.
 
@@ -172,13 +175,12 @@ this final layer of abstraction is felt when using Praxsmith. Although the user 
 was not able to cover this due to selection bias (see \Cref{sec:SurveyBias}), we are
 not confident that those without programming experience would be able to
 easily convey their ideas given the technicality of the language. As part of the
-purpose of this project was to allow for writers to express their ideas more easily,
+purpose of this project was to allow writers to express their ideas more easily,
 this is a significant limitation.
 
-This upper layer of abstraction is a primary opportunity for future research. The
-Praxsmith engine is powerful, but it is hard to wield, so including shortcuts for
-those who aren't as comfortable with traditional programming syntax and methods
-is an ideal next step.
+This upper layer of abstraction is a primary opportunity for future research.
+Including shortcuts for those who aren't as comfortable with traditional
+programming syntax and methods is an ideal next step.
 
 \section{Error Handling} \label{sec:ErrorHandling}
 
@@ -192,13 +194,28 @@ type checker can both prevent common mistakes.
 
 As far as we know, the engine succeeds in this goal, and errors were caught
 as the world is built for all scenarios encountered. Appropriate context was provided
-as well, with line numbers for parsing errors thanks to the errors returned by ``pest''
-and a heirarchy of information that points to relevant type errors thanks to Rust's
-``anyhow'' crate and appropriate handling within the codebase. Even though runtime
+as well, with line numbers for parsing errors, thanks to the errors returned by ``pest''
+and a hierarchy of information that points to relevant type errors, thanks to Rust's
+``anyhow'' crate and appropriate handling within the codebase
+(\Cref{fig:TypeCheckerError} and \Cref{fig:ParsingError}). Even though runtime
 errors are designed not to occur, the error handling within those is just as informative
 so developers can target issues quickly if they arise.
 
-This careful handling is felt throughout development and quick feedback was invaluable
+\begin{figure}
+    \centering
+    \includegraphics[width=6in]{type_checker_error}
+    \caption{An error reported to the user during type checking.}
+    \label{fig:TypeCheckerError}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=6in]{parsing_error}
+    \caption{An error reported to the user during parsing.}
+    \label{fig:ParsingError}
+\end{figure}
+
+This careful handling is felt throughout development, and quick feedback was invaluable
 to the iteration process. Instead of realizing a guarantee was not provided for one
 rare practice deep into playtesting or not at all, the engine forces you to provide
 a fallback case and clarify your intentions.
@@ -209,15 +226,15 @@ One topic that we did not find commonly discussed in papers reviewed was the top
 turns during interactions. This is easy to gloss over until implementation, when it
 becomes unavoidable. In a conversation, people don't go in a circle. The conversation
 flows naturally (ideally), and people speak when they feel it is appropriate. If someone
-is complemented, they respond immediately instead of waiting for everyone else's turn
+is complimented, they respond immediately instead of waiting for everyone else's turn
 to speak.
 
 Praxsmith took the oversimplified approach of a round-robin style turn-based system.
 This was easiest to implement and led to predictable outcomes, but it did come with
 the caveats above.
 
-One potential solution is turn forcing. After a complement, the turn could be manually
-redirected to the person receiving the complement, which forces them to address it
+One potential solution is turn forcing. After a compliment, the turn could be manually
+redirected to the person receiving the compliment, which forces them to address it
 without introduction. This also opens up the door to allow certain actors, like managers,
 to perform many actions at a time, which helps reduce the amount of oversight required.
 The Ensemble Engine implementation behaves similarly, where a character is expected to
@@ -236,7 +253,7 @@ in which characters can perform actions to feel $proud$, and as a player you can
 encourage them to take different actions to achieve this goal throughout the story.
 To make this happen, there needed to be some way for the $proud$ trait to ``decay'',
 so that their goal to become $proud$ wasn't already satisfied at the beginning of the
-turn. An increasing number field would work, but only until it hit max, and it wouldn't
+turn. An increasing number field would work, but only until it hits max, and it wouldn't
 be a very intuitive solution. Another solution could be creating a ``pride manager''
 actor for each character that automatically removes the character's pride every turn, but
 that requires a lot of scaffolding, especially if you start extending the decay over
@@ -257,7 +274,7 @@ There are a few other inconveniences in the language that become apparent when u
 for an extended duration:
 
 \begin{itemize}
-    \item Nesting operators that introduce bindings (e.g. $count\ A,\ B\ where\ A.likes.B$)
+    \item Nesting operators that introduce bindings (e.g., $count\ A,\ B\ where\ A.likes.B$)
     turns out to be a common pattern, especially when working with goals. Currently,
     this cannot be expressed in a single expression and must be broken up as in
     $sum\ (count\ B\ where\ A.likes.B)\ across\ A\ where\ @A\ is\ @A$. Support for the
@@ -279,7 +296,7 @@ In a framework where interactions are governed by generic social practices, indi
 was a concern of ours going into development. However, during testing sessions,
 Being able to provide custom dialog as fields (e.g. a custom greeting to a $greet$
 practice) ended up being a clean solution to this. More research should be done into
-how this feels to use at a larger scale, but it feels to be an appropriate solution
+how this feels to use at a larger scale, but it feels like an appropriate solution
 that emerged from the design of the language.
 
 \section{Debugger} \label{sec:Debugger}
